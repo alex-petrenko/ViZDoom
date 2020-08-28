@@ -75,6 +75,10 @@ namespace vizdoom {
             this->pyState->screenBuffer = this->dataToNumpyArray(colorDims, this->colorShape, NPY_UBYTE, this->state->screenBuffer->data());
         else this->pyState->screenBuffer = pyb::none();
 
+        if (this->state->audioBuffer != nullptr)
+            this->pyState->audioBuffer = this->dataToNumpyArray(1, this->audioShape, NPY_INT, this->state->audioBuffer->data());
+        else this->pyState->audioBuffer = pyb::none();
+
         if (this->state->depthBuffer != nullptr)
             this->pyState->depthBuffer = this->dataToNumpyArray(2, this->grayShape, NPY_UBYTE, this->state->depthBuffer->data());
         else this->pyState->depthBuffer = pyb::none();
@@ -217,6 +221,8 @@ namespace vizdoom {
 
         this->grayShape[0] = height;
         this->grayShape[1] = width;
+
+        this->audioShape[0] = 1024;
     }
 
 

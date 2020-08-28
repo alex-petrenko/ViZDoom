@@ -167,6 +167,7 @@ namespace vizdoom {
                 this->gameState = this->SM->getGameState();
                 this->input = this->SM->getInputState();
                 this->screenBuffer = this->SM->getScreenBuffer();
+                this->audioBuffer = this->SM->getAudioBuffer();
                 this->depthBuffer = this->SM->getDepthBuffer();
                 this->labelsBuffer = this->SM->getLabelsBuffer();
                 this->automapBuffer = this->SM->getAutomapBuffer();
@@ -867,6 +868,8 @@ namespace vizdoom {
     /*----------------------------------------------------------------------------------------------------------------*/
 
     uint8_t *const DoomController::getScreenBuffer() { return this->screenBuffer; }
+
+    int *const DoomController::getAudioBuffer() { return this->audioBuffer; }
 
     uint8_t *const DoomController::getDepthBuffer() { return this->depthBuffer; }
 

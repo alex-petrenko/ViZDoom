@@ -35,6 +35,9 @@ namespace vizdoom{
     typedef std::vector<uint8_t> Buffer;
     typedef std::shared_ptr<Buffer> BufferPtr;
 
+    typedef std::vector<int> AudioBuffer;
+    typedef std::shared_ptr<AudioBuffer> AudioBufferPtr;
+
     struct Label {
         // Label properties
         uint8_t value;
@@ -105,6 +108,7 @@ namespace vizdoom{
         std::vector<double> gameVariables;
 
         BufferPtr screenBuffer;
+        AudioBufferPtr audioBuffer;
         BufferPtr depthBuffer;
         BufferPtr labelsBuffer;
         BufferPtr automapBuffer;

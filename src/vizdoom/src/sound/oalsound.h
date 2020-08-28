@@ -59,6 +59,7 @@
 #endif
 
 #include "efx.h"
+#include "alext.h"
 
 
 class OpenALSoundStream;
@@ -206,6 +207,10 @@ private:
     friend class OpenALSoundStream;
 
 	ALCdevice *InitDevice();
+
+    ALCdevice *InitSoftDevice();
+
+    void getrenderbuffer(int *test_buffer);
 };
 
 #endif // NO_OPENAL

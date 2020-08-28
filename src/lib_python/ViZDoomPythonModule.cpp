@@ -429,6 +429,7 @@ PYBIND11_MODULE(vizdoom, vz){
         .def_readonly("game_variables", &GameStatePython::gameVariables)
 
         .def_readonly("screen_buffer", &GameStatePython::screenBuffer)
+        .def_readonly("audio_buffer", &GameStatePython::audioBuffer)
         .def_readonly("depth_buffer", &GameStatePython::depthBuffer)
         .def_readonly("labels_buffer", &GameStatePython::labelsBuffer)
         .def_readonly("automap_buffer", &GameStatePython::automapBuffer)

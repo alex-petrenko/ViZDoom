@@ -36,10 +36,10 @@ if( NOT MSVC AND NOT APPLE )
 endif( NOT MSVC AND NOT APPLE )
 
 add_library( gdtoa
-	${GEN_FP_FILES}
-	dmisc.c
-	dtoa.c
-	misc.c
-	)
+		${GEN_FP_DEPS}
+		dmisc.c
+		dtoa.c
+		misc.c
+		)
+target_include_directories(gdtoa PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries( gdtoa )
-

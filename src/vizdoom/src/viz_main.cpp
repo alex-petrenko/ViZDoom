@@ -26,6 +26,7 @@
 #include "viz_game.h"
 #include "viz_screen.h"
 #include "viz_message_queue.h"
+#include "viz_sound.h"
 
 #include "d_main.h"
 #include "g_game.h"
@@ -161,6 +162,7 @@ void VIZ_Init(){
         VIZ_GameStateInit();
         VIZ_InputInit();
         VIZ_ScreenInit();
+        VIZ_SoundInit();
 
         VIZ_GameStateSMUpdate();
 
@@ -256,6 +258,7 @@ void VIZ_Update(){
     VIZ_D_ScreenDisplay();
     VIZ_ScreenUpdate();
     VIZ_GameStateUpdate();
+    VIZ_CopySoundBuffer();
 
     vizLastUpdate = VIZ_TIME;
     vizUpdate = false;

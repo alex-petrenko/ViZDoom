@@ -681,6 +681,24 @@ ALCdevice *OpenALSoundRenderer::InitDevice()
 	return device;
 }
 
+ALCdevice *OpenALSoundRenderer::InitSoftDevice()
+{
+    if(!alcIsExtensionPresent(NULL, "ALC_SOFT_loopback"))
+    {
+        Printf("Loopback not supported\n");
+        abort();
+    }
+    LPALCLOOPBACKOPENDEVICESOFT alcLoopbackOpenDeviceSOFT = (LPALCLOOPBACKOPENDEVICESOFT)alcGetProcAddress(NULL,"alcLoopbackOpenDeviceSOFT");
+
+    ALCdevice *device = alcLoopbackOpenDeviceSOFT(NULL);
+
+    return device;
+}
+void OpenALSoundRenderer::getrenderbuffer(int *test_buffer)
+{
+    LPALCRENDERSAMPLESSOFT alcRenderSamplesSOFT = (LPALCRENDERSAMPLESSOFT)alcGetProcAddress(NULL, "alcRenderSamplesSOFT");
+    alcRenderSamplesSOFT(Device, test_buffer, 1024);
+}
 
 template<typename T>
 static void LoadALFunc(const char *name, T *x)
@@ -694,8 +712,10 @@ OpenALSoundRenderer::OpenALSoundRenderer()
 
     Printf("I_InitSound: Initializing OpenAL\n");
 
-	Device = InitDevice();
-	if (Device == NULL) return;
+//	Device = InitDevice();
+    Device = InitSoftDevice();
+
+    if (Device == NULL) return;
 
     const ALCchar *current = NULL;
     if(alcIsExtensionPresent(Device, "ALC_ENUMERATE_ALL_EXT"))
@@ -725,7 +745,19 @@ OpenALSoundRenderer::OpenALSoundRenderer()
     // Other attribs..?
     attribs.Push(0);
 
-    Context = alcCreateContext(Device, &attribs[0]);
+    ALCint attrs[] = {
+            /* Standard 16-bit stereo 44.1khz. Can change as desired. */
+            ALC_FORMAT_TYPE_SOFT, ALC_SHORT_SOFT,
+            ALC_FORMAT_CHANNELS_SOFT, ALC_STEREO_SOFT,
+            ALC_FREQUENCY, 44100,
+
+            /* end-of-list */
+            0
+    };
+
+//    Context = alcCreateContext(Device, &attribs[0]);
+    Context = alcCreateContext(Device, attrs);
+
     if(!Context || alcMakeContextCurrent(Context) == ALC_FALSE)
     {
         Printf(TEXTCOLOR_RED"  Failed to setup context: %s\n", alcGetString(Device, alcGetError(Device)));
@@ -736,6 +768,8 @@ OpenALSoundRenderer::OpenALSoundRenderer()
         Device = NULL;
         return;
     }
+    ALuint buffer = 0;
+    alGenBuffers(1, &buffer);
     attribs.Clear();
 
     DPrintf("  Vendor: " TEXTCOLOR_ORANGE"%s\n", alGetString(AL_VENDOR));
