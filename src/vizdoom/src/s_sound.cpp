@@ -1900,9 +1900,9 @@ void S_RestoreEvictedChannels()
 //==========================================================================
 
 
-void S_Get_render (int *test_buffer)
+void S_Get_render (int *test_buffer, int buf_len)
 {
-    GSnd->getrenderbuffer(test_buffer);
+    GSnd->getrenderbuffer(test_buffer, buf_len);
 }
 
 //==========================================================================

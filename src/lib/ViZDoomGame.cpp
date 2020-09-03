@@ -244,7 +244,7 @@ namespace vizdoom {
             this->state->screenBuffer = std::make_shared<std::vector<uint8_t>>(buf, buf + colorSize);
 
             int *abuf = this->doomController->getAudioBuffer();
-            this->state->audioBuffer = std::make_shared<std::vector<int>>(abuf, abuf + 1024);
+            this->state->audioBuffer = std::make_shared<std::vector<int>>(abuf, abuf + 1260);
 
             if (this->doomController->isDepthBufferEnabled()) {
                 buf = this->doomController->getDepthBuffer();

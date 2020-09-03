@@ -340,7 +340,7 @@ void S_SetSoundPaused (int state);
 // Updates music & sounds
 //
 void S_UpdateSounds (AActor *listener);
-void S_Get_render (int *test_buffer);
+void S_Get_render (int *test_buffer, int buf_len);
 
 void S_RestoreEvictedChannels();
 

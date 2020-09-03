@@ -694,10 +694,10 @@ ALCdevice *OpenALSoundRenderer::InitSoftDevice()
 
     return device;
 }
-void OpenALSoundRenderer::getrenderbuffer(int *test_buffer)
+void OpenALSoundRenderer::getrenderbuffer(int *test_buffer, int buffer_len)
 {
     LPALCRENDERSAMPLESSOFT alcRenderSamplesSOFT = (LPALCRENDERSAMPLESSOFT)alcGetProcAddress(NULL, "alcRenderSamplesSOFT");
-    alcRenderSamplesSOFT(Device, test_buffer, 1024);
+    alcRenderSamplesSOFT(Device, test_buffer, buffer_len);
 }
 
 template<typename T>
