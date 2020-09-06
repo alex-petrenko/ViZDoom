@@ -25,6 +25,7 @@
 #include "viz_depth.h"
 #include "viz_labels.h"
 #include "viz_main.h"
+#include "viz_sound.h"
 
 unsigned int vizScreenWidth, vizScreenHeight;
 size_t vizScreenPitch, vizScreenSize, vizScreenChannelSize;
@@ -178,7 +179,7 @@ void VIZ_ScreenUpdateSM(){
         SMBufferSize[3] = vizScreenSize;
     }
 
-    VIZ_SMUpdate(SMBuffersSize + 1260 * 2);
+    VIZ_SMUpdate(SMBuffersSize + buffer_len * 2);
 
     try {
         for (int i = 0; i != 4; ++i) {
