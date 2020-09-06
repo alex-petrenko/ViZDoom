@@ -25,7 +25,6 @@
 #include "viz_depth.h"
 #include "viz_labels.h"
 #include "viz_main.h"
-#include "viz_sound.h"
 
 unsigned int vizScreenWidth, vizScreenHeight;
 size_t vizScreenPitch, vizScreenSize, vizScreenChannelSize;

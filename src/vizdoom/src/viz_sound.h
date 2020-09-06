@@ -9,7 +9,6 @@
 #include <stddef.h>
 
 extern unsigned int vizSoundLen;
-const int buffer_len = 1260;
 
 void VIZ_SoundInit();
 void VIZ_CopySoundBuffer();
