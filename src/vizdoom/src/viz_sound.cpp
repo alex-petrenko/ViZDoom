@@ -6,7 +6,6 @@
 unsigned int vizSoundLen;
 
 int *vizAudioSM = NULL;
-int byte_buffer_len = 4 * buffer_len;
 short test_buffer[buffer_len][2];
 
 void VIZ_SoundInit() {
@@ -29,5 +28,5 @@ void VIZ_SoundInit() {
 
 void VIZ_CopySoundBuffer() {
     S_Get_render(test_buffer, buffer_len);
-    memcpy((void *) vizAudioSM, (void *) test_buffer, byte_buffer_len);
+    memcpy((void *) vizAudioSM, (void *) test_buffer, 4 * buffer_len);
 }
