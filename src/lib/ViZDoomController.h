@@ -184,6 +184,7 @@ namespace vizdoom {
         void setScreenHeight(unsigned int height);
         ScreenFormat getScreenFormat();
         unsigned int getAudioLength();
+        void setAudioLength(unsigned int audioLength);
 
         void setScreenFormat(ScreenFormat format);
         unsigned int getScreenChannels();

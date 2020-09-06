@@ -204,6 +204,7 @@ namespace vizdoom {
         int channels = this->getScreenChannels();
         int width = this->getScreenWidth();
         int height = this->getScreenHeight();
+        int audioLength = this->getAudioLength();
 
         switch(this->getScreenFormat()){
             case CRCGCB:
@@ -222,7 +223,7 @@ namespace vizdoom {
         this->grayShape[0] = height;
         this->grayShape[1] = width;
 
-        this->audioShape[0] = 1260;
+        this->audioShape[0] = audioLength;
         this->audioShape[1] = 2;
     }
 

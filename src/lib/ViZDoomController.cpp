@@ -699,6 +699,10 @@ namespace vizdoom {
         if (!this->doomRunning) this->screenHeight = height;
     }
 
+    void DoomController::setAudioLength(unsigned int audioLength) {
+        this->audioLength = audioLength;
+    }
+
     void DoomController::setScreenFormat(ScreenFormat format) {
         if (!this->doomRunning) {
             this->screenFormat = format;

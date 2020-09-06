@@ -570,6 +570,8 @@ namespace vizdoom {
 
     void DoomGame::setScreenFormat(ScreenFormat format) { this->doomController->setScreenFormat(format); }
 
+    void DoomGame::setAudioLength(unsigned int audioLength) { this->doomController->setAudioLength(audioLength); }
+
     bool DoomGame::isDepthBufferEnabled() { return this->doomController->isDepthBufferEnabled(); }
 
     void DoomGame::setDepthBufferEnabled(bool depthBuffer) { this->doomController->setDepthBufferEnabled(depthBuffer); }

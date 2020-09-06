@@ -542,6 +542,7 @@ PYBIND11_MODULE(vizdoom, vz){
 
         .def("set_screen_resolution", &DoomGamePython::setScreenResolution)
         .def("set_screen_format", &DoomGamePython::setScreenFormat)
+        .def("set_audio_length", &DoomGamePython::setAudioLength)
 
         .def("is_depth_buffer_enabled", &DoomGamePython::isDepthBufferEnabled)
         .def("set_depth_buffer_enabled", &DoomGamePython::setDepthBufferEnabled)

@@ -197,6 +197,8 @@ namespace vizdoom {
         size_t getScreenPitch();
         size_t getScreenSize();
 
+        void setAudioLength(unsigned int audioLength);
+
 
     protected:
 
