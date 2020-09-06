@@ -202,7 +202,7 @@ namespace vizdoom {
 
         npy_intp colorShape[3];
         npy_intp grayShape[2];
-        npy_intp audioShape[1];
+        npy_intp audioShape[2];
 
         void updateBuffersShapes();
 

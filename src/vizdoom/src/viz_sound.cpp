@@ -8,7 +8,7 @@ unsigned int vizSoundLen;
 int *vizAudioSM = NULL;
 const int buffer_len = 1260;
 int byte_buffer_len = 4 * buffer_len;
-int test_buffer[buffer_len];
+short test_buffer[buffer_len][2];
 
 void VIZ_SoundInit() {
     try {

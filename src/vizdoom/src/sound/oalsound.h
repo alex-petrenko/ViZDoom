@@ -210,7 +210,7 @@ private:
 
     ALCdevice *InitSoftDevice();
 
-    void getrenderbuffer(int *test_buffer, int buffer_len);
+    void getrenderbuffer(short test_buffer[][2], int buffer_len);
 };
 
 #endif // NO_OPENAL
