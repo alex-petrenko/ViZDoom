@@ -183,6 +183,7 @@ namespace vizdoom {
         unsigned int getScreenHeight();
         void setScreenHeight(unsigned int height);
         ScreenFormat getScreenFormat();
+        unsigned int getAudioLength();
 
         void setScreenFormat(ScreenFormat format);
         unsigned int getScreenChannels();
@@ -345,6 +346,7 @@ namespace vizdoom {
         /*------------------------------------------------------------------------------------------------------------*/
 
         unsigned int screenWidth, screenHeight, screenChannels, screenDepth;
+        unsigned int audioLength = 1260;
         size_t screenPitch, screenSize;
         ScreenFormat screenFormat;
         bool depth;

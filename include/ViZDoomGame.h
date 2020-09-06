@@ -192,6 +192,7 @@ namespace vizdoom {
         int getScreenWidth();
         int getScreenHeight();
         int getScreenChannels();
+        int getAudioLength();
         size_t getScreenDepth();
         size_t getScreenPitch();
         size_t getScreenSize();

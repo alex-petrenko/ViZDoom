@@ -821,6 +821,10 @@ namespace vizdoom {
         else return this->screenHeight;
     }
 
+    unsigned int DoomController::getAudioLength() {
+        return this->audioLength;
+    }
+
     unsigned int DoomController::getScreenChannels() { return this->screenChannels; }
 
     unsigned int DoomController::getScreenDepth() { return this->screenDepth; }

@@ -236,6 +236,8 @@ namespace vizdoom {
             int channels = this->getScreenChannels();
             int width = this->getScreenWidth();
             int height = this->getScreenHeight();
+            int audioLength = this->getAudioLength();
+
 
             size_t graySize = static_cast<size_t>(width * height);
             size_t colorSize = graySize *channels;
@@ -244,7 +246,7 @@ namespace vizdoom {
             this->state->screenBuffer = std::make_shared<std::vector<uint8_t>>(buf, buf + colorSize);
 
             short *abuf = this->doomController->getAudioBuffer();
-            this->state->audioBuffer = std::make_shared<std::vector<short>>(abuf, abuf + 1260 * 2);
+            this->state->audioBuffer = std::make_shared<std::vector<short>>(abuf, abuf + audioLength * 2);
 
             if (this->doomController->isDepthBufferEnabled()) {
                 buf = this->doomController->getDepthBuffer();
@@ -628,6 +630,8 @@ namespace vizdoom {
     int DoomGame::getScreenWidth() { return this->doomController->getScreenWidth(); }
 
     int DoomGame::getScreenHeight() { return this->doomController->getScreenHeight(); }
+
+    int DoomGame::getAudioLength() { return this->doomController->getAudioLength(); }
 
     int DoomGame::getScreenChannels() { return this->doomController->getScreenChannels(); }
 
