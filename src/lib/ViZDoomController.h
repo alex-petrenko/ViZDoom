@@ -347,7 +347,7 @@ namespace vizdoom {
         /*------------------------------------------------------------------------------------------------------------*/
 
         unsigned int screenWidth, screenHeight, screenChannels, screenDepth;
-        unsigned int audioLength = 1500;
+        unsigned int audioLength = 1260;
         size_t screenPitch, screenSize;
         ScreenFormat screenFormat;
         bool depth;

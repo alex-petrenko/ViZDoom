@@ -697,7 +697,7 @@ ALCdevice *OpenALSoundRenderer::InitSoftDevice()
 void OpenALSoundRenderer::getrenderbuffer(short test_buffer[][2], int buffer_len)
 {
     LPALCRENDERSAMPLESSOFT alcRenderSamplesSOFT = (LPALCRENDERSAMPLESSOFT)alcGetProcAddress(NULL, "alcRenderSamplesSOFT");
-    alcRenderSamplesSOFT(Device, test_buffer, buffer_len);
+    alcRenderSamplesSOFT(SoftDevice, test_buffer, buffer_len);
 }
 
 template<typename T>
@@ -712,8 +712,8 @@ OpenALSoundRenderer::OpenALSoundRenderer()
 
     Printf("I_InitSound: Initializing OpenAL\n");
 
-//	Device = InitDevice();
-    Device = InitSoftDevice();
+	Device = InitDevice();
+    SoftDevice = InitSoftDevice();
 
     if (Device == NULL) return;
 
@@ -755,8 +755,10 @@ OpenALSoundRenderer::OpenALSoundRenderer()
             0
     };
 
-//    Context = alcCreateContext(Device, &attribs[0]);
-    Context = alcCreateContext(Device, attrs);
+    Context = alcCreateContext(Device, &attribs[0]);
+    SoftContext = alcCreateContext(SoftDevice, attrs);
+
+//    alcMakeContextCurrent(SoftContext);
 
     if(!Context || alcMakeContextCurrent(Context) == ALC_FALSE)
     {

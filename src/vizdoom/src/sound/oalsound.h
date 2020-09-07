@@ -179,8 +179,10 @@ private:
 	void PurgeStoppedSources();
 	static FSoundChan *FindLowestChannel();
 
-	ALCdevice *Device;
-	ALCcontext *Context;
+    ALCdevice *Device;
+    ALCdevice *SoftDevice;
+    ALCcontext *Context;
+    ALCcontext *SoftContext;
 
 	TArray<ALuint> Sources;
 

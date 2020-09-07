@@ -11,7 +11,7 @@ int *vizAudioSM = NULL;
 void VIZ_SoundInit() {
     try {
         VIZSMRegion *bufferRegion = &vizSMRegion[VIZ_SM_AUDIO_NUM];
-        VIZ_SMCreateRegion(bufferRegion, false, VIZ_SMGetRegionOffset(bufferRegion), buffer_len);
+        VIZ_SMCreateRegion(bufferRegion, false, VIZ_SMGetRegionOffset(bufferRegion), 2 * sizeof(short) * buffer_len);
 //        printf("Created audio buffer");
         memset(bufferRegion->address, 0, bufferRegion->size);
 
@@ -28,6 +28,7 @@ void VIZ_SoundInit() {
 
 void VIZ_CopySoundBuffer() {
     short test_buffer[buffer_len][2];
+    int test_buffer1[buffer_len][2];
     S_Get_render(test_buffer, buffer_len);
     memcpy((void *) vizAudioSM, (void *) test_buffer, 2 * sizeof(short) * buffer_len);
 }
