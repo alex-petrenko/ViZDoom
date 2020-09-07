@@ -31,7 +31,7 @@ extern bool vizUpdate;
 extern unsigned int vizLastUpdate;
 extern int vizNodesRecv[VIZ_MAX_PLAYERS];
 
-const int buffer_len = 1260;
+const int buffer_len = 1500;
 
 void VIZ_Init();
 

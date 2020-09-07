@@ -178,7 +178,7 @@ void VIZ_ScreenUpdateSM(){
         SMBufferSize[3] = vizScreenSize;
     }
 
-    VIZ_SMUpdate(SMBuffersSize + buffer_len * 2);
+    VIZ_SMUpdate(SMBuffersSize + buffer_len * sizeof(short) * 2);
 
     try {
         for (int i = 0; i != 4; ++i) {
