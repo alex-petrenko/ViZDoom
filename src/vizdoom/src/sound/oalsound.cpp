@@ -755,8 +755,8 @@ OpenALSoundRenderer::OpenALSoundRenderer()
             0
     };
 
-    Context = alcCreateContext(Device, &attribs[0]);
-    SoftContext = alcCreateContext(SoftDevice, attrs);
+//    Context = alcCreateContext(Device, &attribs[0]);
+    Context = alcCreateContext(SoftDevice, attrs);
 
 //    alcMakeContextCurrent(SoftContext);
 
