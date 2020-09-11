@@ -688,8 +688,13 @@ ALCdevice *OpenALSoundRenderer::InitSoftDevice()
         Printf("Loopback not supported\n");
         abort();
     }
+    if(!alcIsExtensionPresent(NULL, "ALC_EXT_thread_local_context"))
+    {
+        Printf("ALC_EXT_thread_local_context not supported\n");
+        abort();
+    }
     LPALCLOOPBACKOPENDEVICESOFT alcLoopbackOpenDeviceSOFT = (LPALCLOOPBACKOPENDEVICESOFT)alcGetProcAddress(NULL,"alcLoopbackOpenDeviceSOFT");
-
+//    ALCchar *deviceName = reinterpret_cast<ALCchar *>('a');
     ALCdevice *device = alcLoopbackOpenDeviceSOFT(NULL);
 
     return device;
@@ -697,7 +702,7 @@ ALCdevice *OpenALSoundRenderer::InitSoftDevice()
 void OpenALSoundRenderer::getrenderbuffer(short test_buffer[][2], int buffer_len)
 {
     LPALCRENDERSAMPLESSOFT alcRenderSamplesSOFT = (LPALCRENDERSAMPLESSOFT)alcGetProcAddress(NULL, "alcRenderSamplesSOFT");
-    alcRenderSamplesSOFT(SoftDevice, test_buffer, buffer_len);
+    alcRenderSamplesSOFT(Device, test_buffer, buffer_len);
 }
 
 template<typename T>
@@ -712,8 +717,8 @@ OpenALSoundRenderer::OpenALSoundRenderer()
 
     Printf("I_InitSound: Initializing OpenAL\n");
 
-	Device = InitDevice();
-    SoftDevice = InitSoftDevice();
+//	Device = InitDevice();
+    Device = InitSoftDevice();
 
     if (Device == NULL) return;
 
@@ -756,9 +761,14 @@ OpenALSoundRenderer::OpenALSoundRenderer()
     };
 
 //    Context = alcCreateContext(Device, &attribs[0]);
-    Context = alcCreateContext(SoftDevice, attrs);
+    Context = alcCreateContext(Device, attrs);
 
-//    alcMakeContextCurrent(SoftContext);
+//    alcMakeContextCurrent(Context);
+
+//    alcSetThreadContext(Context);
+//    ALCcontext* alcGetThreadContext(void);
+    PFNALCSETTHREADCONTEXTPROC alcSetThreadContext = (PFNALCSETTHREADCONTEXTPROC)alcGetProcAddress(NULL, "alcSetThreadContext");
+    alcSetThreadContext(Context);
 
     if(!Context || alcMakeContextCurrent(Context) == ALC_FALSE)
     {
