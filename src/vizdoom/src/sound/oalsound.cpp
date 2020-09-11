@@ -693,15 +693,13 @@ ALCdevice *OpenALSoundRenderer::InitSoftDevice()
         Printf("ALC_EXT_thread_local_context not supported\n");
         abort();
     }
-    LPALCLOOPBACKOPENDEVICESOFT alcLoopbackOpenDeviceSOFT = (LPALCLOOPBACKOPENDEVICESOFT)alcGetProcAddress(NULL,"alcLoopbackOpenDeviceSOFT");
-//    ALCchar *deviceName = reinterpret_cast<ALCchar *>('a');
+
     ALCdevice *device = alcLoopbackOpenDeviceSOFT(NULL);
 
     return device;
 }
 void OpenALSoundRenderer::getrenderbuffer(short test_buffer[][2], int buffer_len)
 {
-    LPALCRENDERSAMPLESSOFT alcRenderSamplesSOFT = (LPALCRENDERSAMPLESSOFT)alcGetProcAddress(NULL, "alcRenderSamplesSOFT");
     alcRenderSamplesSOFT(Device, test_buffer, buffer_len);
 }
 
@@ -714,6 +712,11 @@ OpenALSoundRenderer::OpenALSoundRenderer()
     : Device(NULL), Context(NULL), SFXPaused(0), PrevEnvironment(NULL), EnvSlot(0)
 {
     EnvFilters[0] = EnvFilters[1] = 0;
+
+    alcRenderSamplesSOFT = (LPALCRENDERSAMPLESSOFT)alcGetProcAddress(NULL, "alcRenderSamplesSOFT");
+    alcSetThreadContext = (PFNALCSETTHREADCONTEXTPROC)alcGetProcAddress(NULL, "alcSetThreadContext");
+    alcLoopbackOpenDeviceSOFT = (LPALCLOOPBACKOPENDEVICESOFT)alcGetProcAddress(NULL,"alcLoopbackOpenDeviceSOFT");
+
 
     Printf("I_InitSound: Initializing OpenAL\n");
 
@@ -763,11 +766,6 @@ OpenALSoundRenderer::OpenALSoundRenderer()
 //    Context = alcCreateContext(Device, &attribs[0]);
     Context = alcCreateContext(Device, attrs);
 
-//    alcMakeContextCurrent(Context);
-
-//    alcSetThreadContext(Context);
-//    ALCcontext* alcGetThreadContext(void);
-    PFNALCSETTHREADCONTEXTPROC alcSetThreadContext = (PFNALCSETTHREADCONTEXTPROC)alcGetProcAddress(NULL, "alcSetThreadContext");
     alcSetThreadContext(Context);
 
     if(!Context || alcMakeContextCurrent(Context) == ALC_FALSE)
