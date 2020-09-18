@@ -69,7 +69,7 @@ namespace vizdoom {
         /* Update buffers */
         this->updateBuffersShapes();
         int colorDims = 3;
-        if (this->getScreenChannels() == 1) colorDims = 2;
+        if (this->getScreenChannels() == 1 ) colorDims = 2;
 
         if (this->state->screenBuffer != nullptr)
             this->pyState->screenBuffer = this->dataToNumpyArray(colorDims, this->colorShape, NPY_UBYTE, this->state->screenBuffer->data());
