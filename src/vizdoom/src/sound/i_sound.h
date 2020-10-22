@@ -147,8 +147,8 @@ public:
 
 	virtual void UpdateListener (SoundListener *) = 0;
 	virtual void UpdateSounds () = 0;
-	virtual void UpdateMusic() {}
-    virtual void getrenderbuffer(short pInt[][2], int buf_len) {}
+	virtual void UpdateMusic() {};
+	virtual void getrenderbuffer(short pInt[][2], int buf_len) {}
 
 	virtual bool IsValid () = 0;
 	virtual void PrintStatus () = 0;
