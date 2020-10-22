@@ -681,7 +681,7 @@ ALCdevice *OpenALSoundRenderer::InitDevice()
 	return device;
 }
 
-ALCdevice *OpenALSoundRenderer::InitSoftDevice()
+	ALCdevice *OpenALSoundRenderer::InitSoftDevice()
 {
     if(!alcIsExtensionPresent(NULL, "ALC_SOFT_loopback"))
     {
@@ -693,11 +693,10 @@ ALCdevice *OpenALSoundRenderer::InitSoftDevice()
         Printf("ALC_EXT_thread_local_context not supported\n");
         abort();
     }
-
     ALCdevice *device = alcLoopbackOpenDeviceSOFT(NULL);
-
     return device;
 }
+
 void OpenALSoundRenderer::getrenderbuffer(short test_buffer[][2], int buffer_len)
 {
     alcRenderSamplesSOFT(Device, test_buffer, buffer_len);
@@ -717,13 +716,11 @@ OpenALSoundRenderer::OpenALSoundRenderer()
     alcSetThreadContext = (PFNALCSETTHREADCONTEXTPROC)alcGetProcAddress(NULL, "alcSetThreadContext");
     alcLoopbackOpenDeviceSOFT = (LPALCLOOPBACKOPENDEVICESOFT)alcGetProcAddress(NULL,"alcLoopbackOpenDeviceSOFT");
 
-
     Printf("I_InitSound: Initializing OpenAL\n");
 
-//	Device = InitDevice();
+	// Device = InitDevice();
     Device = InitSoftDevice();
-
-    if (Device == NULL) return;
+	if (Device == NULL) return;
 
     const ALCchar *current = NULL;
     if(alcIsExtensionPresent(Device, "ALC_ENUMERATE_ALL_EXT"))
@@ -753,21 +750,17 @@ OpenALSoundRenderer::OpenALSoundRenderer()
     // Other attribs..?
     attribs.Push(0);
 
-    ALCint attrs[] = {
+	ALCint attrs[] = {
             /* Standard 16-bit stereo 44.1khz. Can change as desired. */
             ALC_FORMAT_TYPE_SOFT, ALC_SHORT_SOFT,
             ALC_FORMAT_CHANNELS_SOFT, ALC_STEREO_SOFT,
             ALC_FREQUENCY, 44100,
-
             /* end-of-list */
             0
     };
-
 //    Context = alcCreateContext(Device, &attribs[0]);
     Context = alcCreateContext(Device, attrs);
-
     alcSetThreadContext(Context);
-
     if(!Context || alcMakeContextCurrent(Context) == ALC_FALSE)
     {
         Printf(TEXTCOLOR_RED"  Failed to setup context: %s\n", alcGetString(Device, alcGetError(Device)));
@@ -778,7 +771,7 @@ OpenALSoundRenderer::OpenALSoundRenderer()
         Device = NULL;
         return;
     }
-    ALuint buffer = 0;
+	ALuint buffer = 0;
     alGenBuffers(1, &buffer);
     attribs.Clear();
 
