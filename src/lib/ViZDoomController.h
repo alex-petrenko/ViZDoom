@@ -268,6 +268,9 @@ namespace vizdoom {
         unsigned int getPlayerLastActionTic(unsigned int playerNumber);
         unsigned int getPlayerLastKillTic(unsigned int playerNumber);
 
+        AudioBufferPtr getLargerAudioBuffer();
+
+        AudioBufferPtr largerAudioBuffer;
     private:
 
         /* Flow */

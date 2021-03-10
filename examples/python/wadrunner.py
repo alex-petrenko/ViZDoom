@@ -4,7 +4,7 @@
 # This script presents how to use the most basic features of the environment.
 # It configures the engine, and makes the agent perform random actions.
 # It also gets current state and reward earned with the action.
-# <episodes> number of episodes are played. 
+# <episodes> number of episodes are played.
 # Random combination of buttons is chosen for every action.
 # Game variables from state and last reward are printed.
 #
@@ -12,7 +12,7 @@
 #####################################################################
 
 from __future__ import print_function
-import vizdoom as vzd
+import vizdoom_orig as vzd
 print(vzd.__file__)
 import moviepy.editor as mpe
 import cv2
@@ -22,7 +22,7 @@ from time import sleep
 import time
 from scipy.io.wavfile import write
 import numpy as np
-import matplotlib.pyplot as plot
+# import matplotlib.pyplot as plot
 import os
 # import msvcrt
 
@@ -41,8 +41,8 @@ if __name__ == "__main__":
 
     # Sets path to additional resources wad file which is basically your scenario wad.
     # If not specified default maps will be used and it's pretty much useless... unless you want to play good old Doom.
-    
-    wad_path = "/home/shashank/Desktop/Research/RESL/Downloads/NavDoom/outputs/7_TRAIN.wad"
+
+    wad_path = "/home/khegde/Desktop/Github/sample-factory/envs/doom/scenarios/sound2.wad"
     # wad_path = "/home/shashank/Downloads/play_a_sound.wad"
 
     game.set_doom_scenario_path(wad_path)
@@ -58,9 +58,9 @@ if __name__ == "__main__":
     # game.set_screen_resolution(vzd.ScreenResolution.RES_160X120)
 
 
-    if is_audio:
-        # Sets audio_buffer length, default is 1260
-        game.set_audio_length(win_len)
+    # if is_audio:
+    #     # Sets audio_buffer length, default is 1260
+    #     game.set_audio_length(win_len)
 
 
     # Sets the screen buffer format. Not used here but now you can change it. Default is CRCGCB.
@@ -100,10 +100,10 @@ if __name__ == "__main__":
     game.add_available_button(vzd.Button.MOVE_BACKWARD)
     game.add_available_button(vzd.Button.TURN_LEFT)
     game.add_available_button(vzd.Button.TURN_RIGHT)
-    		
-		
-		
-		
+
+
+
+
     game.add_available_button(vzd.Button.ATTACK)
 
     # Adds game variables that will be included in state.
@@ -137,16 +137,16 @@ if __name__ == "__main__":
     # MOVE_LEFT, MOVE_RIGHT, ATTACK
     # game.get_available_buttons_size() can be used to check the number of available buttons.
     # 5 more combinations are naturally possible but only 3 are included for transparency when watching.
-    actions = [[True, False, False, False, False, False], 
-                [False, True, False, False, False, False], 
-                [False, False, True, False, False, False], 
-                [False, False, False, True, False, False], 
-                [False, False, False, False, True, False], 
-                [False, False, False, False, False, True]]
+    actions = [[True, False, False, False, False, False],
+               [False, True, False, False, False, False],
+               [False, False, True, False, False, False],
+               [False, False, False, True, False, False],
+               [False, False, False, False, True, False],
+               [False, False, False, False, False, True]]
 
     # Run this many episodes
-    episodes = 10
-
+    episodes = 2
+    f_skip = 4
     # Sets time that will pause the engine after each action (in seconds)
     # Without this everything would go too fast for you to keep track of what's happening.
     sleep_time = 1.0 / vzd.DEFAULT_TICRATE  # = 0.028
@@ -180,10 +180,14 @@ if __name__ == "__main__":
             objects = state.objects
             sectors = state.sectors
             if is_audio:
-                audio = state.audio_buffer
+                if state.audio_buffer is not None:
+                    audio = state.audio_buffer
 
-                audios.extend(list(audio))
-                screens.append(screen_buf[:,:,::-1])
+                    audios.extend(list(audio))
+                    # plot.specgram(audio[:,0])
+                    # plot.show()
+
+                    screens.append(screen_buf[:,:,::-1])
                 # print(max(audio))
 
             # Games variables can be also accessed via:
@@ -193,7 +197,8 @@ if __name__ == "__main__":
             if step % 10 == 0:
                 ac = choice(actions)
             # print(ac)
-            r = game.make_action(ac)
+            r = game.make_action(ac,f_skip)
+            # r = game.make_action(ac)
             frames += 1
             # d += 1
             # Makes a "prolonged" action and skip frames:
@@ -246,7 +251,7 @@ if __name__ == "__main__":
 
     if is_audio:
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        out = cv2.VideoWriter('trials/'+ str(ran) +'/video.mp4', fourcc, vzd.DEFAULT_TICRATE, (640,480))
+        out = cv2.VideoWriter('trials/'+ str(ran) +'/video.mp4', fourcc, vzd.DEFAULT_TICRATE/f_skip, (640,480))
         for i in range(len(screens)):
             out.write(screens[i])
         out.release()

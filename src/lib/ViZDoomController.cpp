@@ -292,12 +292,29 @@ namespace vizdoom {
         }
 
         int ticsMade = 0;
-
+        this->largerAudioBuffer = NULL;
         for (unsigned int i = 0; i < tics; ++i) {
-            if (i == tics - 1) this->tic(update);
-            else this->tic(false);
+            if (i == tics - 1) this->tic(true);
+            else this->tic(true);
 
-            ++ticsMade;
+            size_t audioSize = static_cast<size_t>(audioLength * 2);
+            short *abuf = this->getAudioBuffer();
+
+
+            const std::shared_ptr<std::vector<short>> &temp_aud = std::make_shared<std::vector<short>>(abuf, abuf +
+                                                                                                             audioSize);
+            if ((this->largerAudioBuffer == NULL)) {
+                this->largerAudioBuffer = temp_aud;
+            }
+            else {
+                for (unsigned int j = 0; j < 2520; j++){
+                    this->largerAudioBuffer->push_back(temp_aud->data()[j]);
+                }
+            }
+
+
+
+                    ++ticsMade;
 
             if (!this->isTicPossible() && i != tics - 1) {
                 this->MQDoom->send(MSG_CODE_UPDATE);
@@ -878,6 +895,8 @@ namespace vizdoom {
     uint8_t *const DoomController::getScreenBuffer() { return this->screenBuffer; }
 
     short *const DoomController::getAudioBuffer() { return this->audioBuffer; }
+
+    AudioBufferPtr DoomController::getLargerAudioBuffer() { return this->largerAudioBuffer; }
 
     uint8_t *const DoomController::getDepthBuffer() { return this->depthBuffer; }
 
