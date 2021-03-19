@@ -231,6 +231,10 @@ void VIZ_Tic(){
             if(vizUpdate) {
                 VIZ_Update();
             }
+
+//            Sound buffer will always be updated irrespective of update signal
+            if (!*viz_nosound)
+                VIZ_CopySoundBuffer();
             VIZ_MQSend(VIZ_MSG_CODE_DOOM_DONE);
             vizNextTic = false;
         }
@@ -258,7 +262,8 @@ void VIZ_Update(){
     VIZ_D_ScreenDisplay();
     VIZ_ScreenUpdate();
     VIZ_GameStateUpdate();
-    VIZ_CopySoundBuffer();
+//    if (!*viz_nosound)
+//        VIZ_CopySoundBuffer();
 
     vizLastUpdate = VIZ_TIME;
     vizUpdate = false;
