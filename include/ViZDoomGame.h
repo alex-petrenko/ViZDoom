@@ -201,6 +201,9 @@ namespace vizdoom {
 
 
         unsigned int tic_size;
+
+        void setSoundSamplingFreq(unsigned int freq);
+
     protected:
 
         DoomController *doomController;

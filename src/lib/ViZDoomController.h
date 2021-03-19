@@ -271,6 +271,9 @@ namespace vizdoom {
         AudioBufferPtr getLargerAudioBuffer();
 
         AudioBufferPtr largerAudioBuffer;
+
+        void setSoundSamplingFreq(unsigned int i);
+
     private:
 
         /* Flow */
@@ -350,7 +353,7 @@ namespace vizdoom {
         /*------------------------------------------------------------------------------------------------------------*/
 
         unsigned int screenWidth, screenHeight, screenChannels, screenDepth;
-        unsigned int audioLength = 1260;
+        unsigned int audioLength = 1260/2;
         size_t screenPitch, screenSize;
         ScreenFormat screenFormat;
         bool depth;
@@ -395,6 +398,7 @@ namespace vizdoom {
         std::vector<std::string> customArgs;
         std::vector<std::string> doomArgs;
 
+        unsigned int sampling_fre;
     };
 
 }

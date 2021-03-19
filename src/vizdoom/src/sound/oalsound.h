@@ -68,7 +68,10 @@ class OpenALSoundRenderer : public SoundRenderer
 {
 public:
 	OpenALSoundRenderer();
-	virtual ~OpenALSoundRenderer();
+
+    OpenALSoundRenderer(unsigned int sampling_freq);
+
+    virtual ~OpenALSoundRenderer();
 
 	virtual void SetSfxVolume(float volume);
 	virtual void SetMusicVolume(float volume);

@@ -632,6 +632,10 @@ namespace vizdoom {
 
     void DoomGame::setSoundEnabled(bool sound) { this->doomController->setNoSound(!sound); }
 
+    void DoomGame::setSoundSamplingFreq(unsigned  int freq) { this->doomController->setSoundSamplingFreq(freq); }
+
+
+
     int DoomGame::getScreenWidth() { return this->doomController->getScreenWidth(); }
 
     int DoomGame::getScreenHeight() { return this->doomController->getScreenHeight(); }

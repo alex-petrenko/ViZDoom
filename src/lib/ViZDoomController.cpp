@@ -1447,4 +1447,9 @@ namespace vizdoom {
         }
         this->MQController->send(MSG_CODE_DOOM_PROCESS_EXIT);
     }
+
+    void DoomController::setSoundSamplingFreq(unsigned int i) {
+        this->sampling_fre = i;
+
+    }
 }

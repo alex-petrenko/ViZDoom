@@ -539,6 +539,8 @@ PYBIND11_MODULE(vizdoom, vz){
 
         .def("set_console_enabled",&DoomGamePython::setConsoleEnabled)
         .def("set_sound_enabled",&DoomGamePython::setSoundEnabled)
+        .def("set_sound_sampling_freq",&DoomGamePython::setSoundSamplingFreq)
+
 
         .def("set_screen_resolution", &DoomGamePython::setScreenResolution)
         .def("set_screen_format", &DoomGamePython::setScreenFormat)

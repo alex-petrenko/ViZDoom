@@ -26,7 +26,6 @@ import matplotlib.pyplot as plot
 import os
 # import msvcrt
 
-win_len = 1260
 # import wavio
 is_audio = True
 
@@ -56,11 +55,6 @@ if __name__ == "__main__":
     # Sets resolution. Default is 320X240
     game.set_screen_resolution(vzd.ScreenResolution.RES_640X480)
     # game.set_screen_resolution(vzd.ScreenResolution.RES_160X120)
-
-
-    # if is_audio:
-    #     # Sets audio_buffer length, default is 1260
-    #     game.set_audio_length(win_len)
 
 
     # Sets the screen buffer format. Not used here but now you can change it. Default is CRCGCB.
@@ -148,7 +142,7 @@ if __name__ == "__main__":
 
     # Run this many episodes
     episodes = 1
-    f_skip = 12
+    f_skip = 4
     # Sets time that will pause the engine after each action (in seconds)
     # Without this everything would go too fast for you to keep track of what's happening.
     sleep_time = 1.0 / vzd.DEFAULT_TICRATE  # = 0.028
@@ -263,7 +257,8 @@ if __name__ == "__main__":
         for i in range(len(screens)):
             out.write(screens[i])
         out.release()
-        write('trials/'+ str(ran) +'/audio.wav', 44100, m)
+        # write('trials/'+ str(ran) +'/audio.wav', 44100/2, m)
+        write('trials/'+ str(ran) +'/audio.wav', 22050, m)
     # write('stereo_test'+ str(en_tim - st_tim) +'.wav', 44100, wa.T)
     # wavio.write('stereo_test'+ str(en_tim - st_tim) +'.wav',)
     print("total audio time should be :" + str(d))

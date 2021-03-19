@@ -755,6 +755,7 @@ OpenALSoundRenderer::OpenALSoundRenderer()
             ALC_FORMAT_TYPE_SOFT, ALC_SHORT_SOFT,
             ALC_FORMAT_CHANNELS_SOFT, ALC_STEREO_SOFT,
             ALC_FREQUENCY, 44100,
+//            ALC_FREQUENCY, 22050,
             /* end-of-list */
             0
     };
@@ -772,6 +773,244 @@ OpenALSoundRenderer::OpenALSoundRenderer()
         return;
     }
 	ALuint buffer = 0;
+    alGenBuffers(1, &buffer);
+    attribs.Clear();
+
+    DPrintf("  Vendor: " TEXTCOLOR_ORANGE"%s\n", alGetString(AL_VENDOR));
+    DPrintf("  Renderer: " TEXTCOLOR_ORANGE"%s\n", alGetString(AL_RENDERER));
+    DPrintf("  Version: " TEXTCOLOR_ORANGE"%s\n", alGetString(AL_VERSION));
+    DPrintf("  Extensions: " TEXTCOLOR_ORANGE"%s\n", alGetString(AL_EXTENSIONS));
+
+    ALC.EXT_EFX = !!alcIsExtensionPresent(Device, "ALC_EXT_EFX");
+    ALC.EXT_disconnect = !!alcIsExtensionPresent(Device, "ALC_EXT_disconnect");;
+    AL.EXT_source_distance_model = !!alIsExtensionPresent("AL_EXT_source_distance_model");
+    AL.SOFT_deferred_updates = !!alIsExtensionPresent("AL_SOFT_deferred_updates");
+    AL.SOFT_loop_points = !!alIsExtensionPresent("AL_SOFT_loop_points");
+
+    alDopplerFactor(0.5f);
+    alSpeedOfSound(343.3f * 96.0f);
+    alDistanceModel(AL_INVERSE_DISTANCE);
+    if(AL.EXT_source_distance_model)
+        alEnable(AL_SOURCE_DISTANCE_MODEL);
+
+    if(AL.SOFT_deferred_updates)
+    {
+        LOAD_FUNC(alDeferUpdatesSOFT);
+        LOAD_FUNC(alProcessUpdatesSOFT);
+    }
+    else
+    {
+        alDeferUpdatesSOFT = _wrap_DeferUpdatesSOFT;
+        alProcessUpdatesSOFT = _wrap_ProcessUpdatesSOFT;
+    }
+
+    ALenum err = getALError();
+    if(err != AL_NO_ERROR)
+    {
+        alcMakeContextCurrent(NULL);
+        alcDestroyContext(Context);
+        Context = NULL;
+        alcCloseDevice(Device);
+        Device = NULL;
+        return;
+    }
+
+    ALCint numMono=0, numStereo=0;
+    alcGetIntegerv(Device, ALC_MONO_SOURCES, 1, &numMono);
+    alcGetIntegerv(Device, ALC_STEREO_SOURCES, 1, &numStereo);
+
+    // OpenAL specification doesn't require alcGetIntegerv() to return
+    // meaningful values for ALC_MONO_SOURCES and ALC_MONO_SOURCES.
+    // At least Apple's OpenAL implementation returns zeroes,
+    // although it can generate reasonable number of sources.
+
+    const int numChannels = MAX<int>(*snd_channels, 2);
+    int numSources = numMono + numStereo;
+
+    if (0 == numSources) {
+        numSources = numChannels;
+    }
+
+    //Sources.Resize(MIN<int>(MAX<int>(*snd_channels, 2), numMono+numStereo));
+    Sources.Resize(MIN<int>(numChannels, numSources));
+
+    for(size_t i = 0;i < Sources.Size();i++)
+    {
+        alGenSources(1, &Sources[i]);
+        if(getALError() != AL_NO_ERROR)
+        {
+            Sources.Resize(i);
+            Sources.ShrinkToFit();
+            break;
+        }
+    }
+    if(Sources.Size() == 0)
+    {
+        Printf(TEXTCOLOR_RED" Error: could not generate any sound sources!\n");
+        alcMakeContextCurrent(NULL);
+        alcDestroyContext(Context);
+        Context = NULL;
+        alcCloseDevice(Device);
+        Device = NULL;
+        return;
+    }
+    FreeSfx = Sources;
+    DPrintf("  Allocated " TEXTCOLOR_BLUE"%u" TEXTCOLOR_NORMAL" sources\n", Sources.Size());
+
+    WasInWater = false;
+    if(*snd_efx && ALC.EXT_EFX)
+    {
+        // EFX function pointers
+        LOAD_FUNC(alGenEffects);
+        LOAD_FUNC(alDeleteEffects);
+        LOAD_FUNC(alIsEffect);
+        LOAD_FUNC(alEffecti);
+        LOAD_FUNC(alEffectiv);
+        LOAD_FUNC(alEffectf);
+        LOAD_FUNC(alEffectfv);
+        LOAD_FUNC(alGetEffecti);
+        LOAD_FUNC(alGetEffectiv);
+        LOAD_FUNC(alGetEffectf);
+        LOAD_FUNC(alGetEffectfv);
+
+        LOAD_FUNC(alGenFilters);
+        LOAD_FUNC(alDeleteFilters);
+        LOAD_FUNC(alIsFilter);
+        LOAD_FUNC(alFilteri);
+        LOAD_FUNC(alFilteriv);
+        LOAD_FUNC(alFilterf);
+        LOAD_FUNC(alFilterfv);
+        LOAD_FUNC(alGetFilteri);
+        LOAD_FUNC(alGetFilteriv);
+        LOAD_FUNC(alGetFilterf);
+        LOAD_FUNC(alGetFilterfv);
+
+        LOAD_FUNC(alGenAuxiliaryEffectSlots);
+        LOAD_FUNC(alDeleteAuxiliaryEffectSlots);
+        LOAD_FUNC(alIsAuxiliaryEffectSlot);
+        LOAD_FUNC(alAuxiliaryEffectSloti);
+        LOAD_FUNC(alAuxiliaryEffectSlotiv);
+        LOAD_FUNC(alAuxiliaryEffectSlotf);
+        LOAD_FUNC(alAuxiliaryEffectSlotfv);
+        LOAD_FUNC(alGetAuxiliaryEffectSloti);
+        LOAD_FUNC(alGetAuxiliaryEffectSlotiv);
+        LOAD_FUNC(alGetAuxiliaryEffectSlotf);
+        LOAD_FUNC(alGetAuxiliaryEffectSlotfv);
+        if(getALError() == AL_NO_ERROR)
+        {
+            ALuint envReverb;
+            alGenEffects(1, &envReverb);
+            if(getALError() == AL_NO_ERROR)
+            {
+                alEffecti(envReverb, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
+                if(alGetError() == AL_NO_ERROR)
+                    DPrintf("  EAX Reverb found\n");
+                alEffecti(envReverb, AL_EFFECT_TYPE, AL_EFFECT_REVERB);
+                if(alGetError() == AL_NO_ERROR)
+                    DPrintf("  Standard Reverb found\n");
+
+                alDeleteEffects(1, &envReverb);
+                getALError();
+            }
+
+            alGenAuxiliaryEffectSlots(1, &EnvSlot);
+            alGenFilters(2, EnvFilters);
+            if(getALError() == AL_NO_ERROR)
+            {
+                alFilteri(EnvFilters[0], AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+                alFilteri(EnvFilters[1], AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+                if(getALError() == AL_NO_ERROR)
+                    DPrintf("  Lowpass found\n");
+                else
+                {
+                    alDeleteFilters(2, EnvFilters);
+                    EnvFilters[0] = EnvFilters[1] = 0;
+                    alDeleteAuxiliaryEffectSlots(1, &EnvSlot);
+                    EnvSlot = 0;
+                    getALError();
+                }
+            }
+            else
+            {
+                alDeleteFilters(2, EnvFilters);
+                alDeleteAuxiliaryEffectSlots(1, &EnvSlot);
+                EnvFilters[0] = EnvFilters[1] = 0;
+                EnvSlot = 0;
+                getALError();
+            }
+        }
+    }
+
+    if(EnvSlot)
+        Printf("  EFX enabled\n");
+}
+// This constructor can change the OPENAL sampling frequency
+OpenALSoundRenderer::OpenALSoundRenderer( unsigned int sampling_freq)
+        : Device(NULL), Context(NULL), SFXPaused(0), PrevEnvironment(NULL), EnvSlot(0)
+{
+    EnvFilters[0] = EnvFilters[1] = 0;
+
+    alcRenderSamplesSOFT = (LPALCRENDERSAMPLESSOFT)alcGetProcAddress(NULL, "alcRenderSamplesSOFT");
+    alcSetThreadContext = (PFNALCSETTHREADCONTEXTPROC)alcGetProcAddress(NULL, "alcSetThreadContext");
+    alcLoopbackOpenDeviceSOFT = (LPALCLOOPBACKOPENDEVICESOFT)alcGetProcAddress(NULL,"alcLoopbackOpenDeviceSOFT");
+
+    Printf("I_InitSound: Initializing OpenAL\n");
+
+    // Device = InitDevice();
+    Device = InitSoftDevice();
+    if (Device == NULL) return;
+
+    const ALCchar *current = NULL;
+    if(alcIsExtensionPresent(Device, "ALC_ENUMERATE_ALL_EXT"))
+        current = alcGetString(Device, ALC_ALL_DEVICES_SPECIFIER);
+    if(alcGetError(Device) != ALC_NO_ERROR || !current)
+        current = alcGetString(Device, ALC_DEVICE_SPECIFIER);
+    Printf("  Opened device " TEXTCOLOR_ORANGE"%s\n", current);
+
+    ALCint major=0, minor=0;
+    alcGetIntegerv(Device, ALC_MAJOR_VERSION, 1, &major);
+    alcGetIntegerv(Device, ALC_MINOR_VERSION, 1, &minor);
+    DPrintf("  ALC Version: " TEXTCOLOR_BLUE"%d.%d\n", major, minor);
+    DPrintf("  ALC Extensions: " TEXTCOLOR_ORANGE"%s\n", alcGetString(Device, ALC_EXTENSIONS));
+
+    TArray<ALCint> attribs;
+    if(*snd_samplerate > 0)
+    {
+        attribs.Push(ALC_FREQUENCY);
+        attribs.Push(*snd_samplerate);
+    }
+    // Make sure one source is capable of stereo output with the rest doing
+    // mono, without running out of voices
+    attribs.Push(ALC_MONO_SOURCES);
+    attribs.Push(MAX<ALCint>(*snd_channels, 2) - 1);
+    attribs.Push(ALC_STEREO_SOURCES);
+    attribs.Push(1);
+    // Other attribs..?
+    attribs.Push(0);
+
+    ALCint attrs[] = {
+            /* Standard 16-bit stereo 44.1khz. Can change as desired. */
+            ALC_FORMAT_TYPE_SOFT, ALC_SHORT_SOFT,
+            ALC_FORMAT_CHANNELS_SOFT, ALC_STEREO_SOFT,
+            ALC_FREQUENCY, static_cast<ALCint>(sampling_freq),
+//            ALC_FREQUENCY, 22050,
+            /* end-of-list */
+            0
+    };
+//    Context = alcCreateContext(Device, &attribs[0]);
+    Context = alcCreateContext(Device, attrs);
+    alcSetThreadContext(Context);
+    if(!Context || alcMakeContextCurrent(Context) == ALC_FALSE)
+    {
+        Printf(TEXTCOLOR_RED"  Failed to setup context: %s\n", alcGetString(Device, alcGetError(Device)));
+        if(Context)
+            alcDestroyContext(Context);
+        Context = NULL;
+        alcCloseDevice(Device);
+        Device = NULL;
+        return;
+    }
+    ALuint buffer = 0;
     alGenBuffers(1, &buffer);
     attribs.Clear();
 
