@@ -295,7 +295,7 @@ void I_InitSound ()
 		#ifndef NO_OPENAL
 			if (IsOpenALPresent())
 			{
-				GSnd = new OpenALSoundRenderer(sampling_frequency);
+				GSnd = new OpenALSoundRenderer( sampling_frequency);
 			}
 		#endif
 		#ifndef NO_FMOD
