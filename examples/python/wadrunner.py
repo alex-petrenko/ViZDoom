@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     # -----------------------------------------------------------------------------------------------------------------------
     # Turns on the sound. (turned off by default)
-    game.set_sound_enabled(False)
+    game.set_sound_enabled(True)
     # -----------------------------------------------------------------------------------------------------------------------
 
     # Sets the living reward (for each move) to -1
@@ -148,7 +148,7 @@ if __name__ == "__main__":
 
     # Run this many episodes
     episodes = 1
-    f_skip = 4
+    f_skip = 12
     # Sets time that will pause the engine after each action (in seconds)
     # Without this everything would go too fast for you to keep track of what's happening.
     sleep_time = 1.0 / vzd.DEFAULT_TICRATE  # = 0.028

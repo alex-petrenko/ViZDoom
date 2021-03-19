@@ -297,18 +297,18 @@ namespace vizdoom {
             if (i == tics - 1) this->tic(true);
             else this->tic(false);
 
-            size_t audioSize = static_cast<size_t>(audioLength * 2);
-            short *abuf = this->getAudioBuffer();
+            if (!this->noSound) {
+                size_t audioSize = static_cast<size_t>(audioLength * 2);
+                short *abuf = this->getAudioBuffer();
 
-
-            const std::shared_ptr<std::vector<short>> &temp_aud = std::make_shared<std::vector<short>>(abuf, abuf +
-                                                                                                             audioSize);
-            if ((this->largerAudioBuffer == NULL)) {
-                this->largerAudioBuffer = temp_aud;
-            }
-            else {
-                for (unsigned int j = 0; j < 2520; j++){
-                    this->largerAudioBuffer->push_back(temp_aud->data()[j]);
+                const std::shared_ptr<std::vector<short>> &temp_aud = std::make_shared<std::vector<short>>(abuf, abuf +
+                                                                                                                 audioSize);
+                if ((this->largerAudioBuffer == NULL)) {
+                    this->largerAudioBuffer = temp_aud;
+                } else {
+                    for (unsigned int j = 0; j < (audioLength * 2); j++) {
+                        this->largerAudioBuffer->push_back(temp_aud->data()[j]);
+                    }
                 }
             }
 

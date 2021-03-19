@@ -165,6 +165,7 @@ namespace vizdoom {
         // TODO maybe set lastReward to 0 if finished?
         if (this->doomController->isTicPossible()) {
             try {
+                this->tic_size = tics;
                 this->doomController->tics(tics, updateState);
                 if (updateState) this->updateState();
             }
@@ -247,8 +248,7 @@ namespace vizdoom {
             uint8_t *buf = this->doomController->getScreenBuffer();
             this->state->screenBuffer = std::make_shared<std::vector<uint8_t>>(buf, buf + colorSize);
 
-            short *abuf = this->doomController->getAudioBuffer();
-//            this->state->audioBuffer = std::make_shared<std::vector<short>>(abuf, abuf + audioSize);
+            // This buffer contains all the sound that happened between tics
             this->state->audioBuffer = this->doomController->getLargerAudioBuffer();
 
             if (this->doomController->isDepthBufferEnabled()) {

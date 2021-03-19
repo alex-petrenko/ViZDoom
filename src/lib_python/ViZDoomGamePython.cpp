@@ -223,7 +223,7 @@ namespace vizdoom {
         this->grayShape[0] = height;
         this->grayShape[1] = width;
 
-        this->audioShape[0] = audioLength * 4;
+        this->audioShape[0] = audioLength * this->tic_size;
         this->audioShape[1] = 2;
     }
 

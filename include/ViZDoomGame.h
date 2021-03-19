@@ -200,6 +200,7 @@ namespace vizdoom {
         void setAudioLength(unsigned int audioLength);
 
 
+        unsigned int tic_size;
     protected:
 
         DoomController *doomController;
@@ -233,9 +234,6 @@ namespace vizdoom {
 
         double livingReward;
         double deathPenalty;
-
-    private:
-
 
 
     };
