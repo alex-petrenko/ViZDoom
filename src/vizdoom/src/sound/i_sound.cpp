@@ -73,6 +73,7 @@ extern HINSTANCE g_hInst;
 #include "i_video.h"
 #include "s_sound.h"
 #include "v_text.h"
+#include "viz_main.h"
 #include "gi.h"
 
 #include "doomdef.h"
@@ -294,7 +295,7 @@ void I_InitSound ()
 		#ifndef NO_OPENAL
 			if (IsOpenALPresent())
 			{
-				GSnd = new OpenALSoundRenderer;
+				GSnd = new OpenALSoundRenderer(sampling_frequency);
 			}
 		#endif
 		#ifndef NO_FMOD
