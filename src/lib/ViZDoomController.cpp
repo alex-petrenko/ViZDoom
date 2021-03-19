@@ -295,7 +295,7 @@ namespace vizdoom {
         this->largerAudioBuffer = NULL;
         for (unsigned int i = 0; i < tics; ++i) {
             if (i == tics - 1) this->tic(true);
-            else this->tic(true);
+            else this->tic(false);
 
             size_t audioSize = static_cast<size_t>(audioLength * 2);
             short *abuf = this->getAudioBuffer();
