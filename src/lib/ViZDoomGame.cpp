@@ -632,7 +632,19 @@ namespace vizdoom {
 
     void DoomGame::setSoundEnabled(bool sound) { this->doomController->setNoSound(!sound); }
 
-    void DoomGame::setSoundSamplingFreq(unsigned  int freq) { this->doomController->setSoundSamplingFreq(freq); }
+//    void DoomGame::setSoundSamplingFreq(unsigned  int freq) { this->doomController->setSoundSamplingFreq(freq); }
+    void DoomGame::setSoundSamplingFreq(SamplingRate samplingRate) {
+        unsigned int samp_freq = 0;
+#define CASE_SF(w) case SR_##w : samp_freq = w; break;
+        switch (samplingRate) {
+            CASE_SF(11025)
+            CASE_SF(22050)
+            CASE_SF(44100)
+        }
+        this->doomController->setSoundSamplingFreq(samp_freq);
+    }
+
+    unsigned int  DoomGame::getSoundSamplingFreq() { return this->doomController->getSoundSamplingFreq(); }
 
 
 

@@ -214,6 +214,12 @@ namespace vizdoom{
         OBJECTS_WITH_SIZE,  // In addition to the previous, all things are wrapped in a box showing their size.
     };
 
+    enum SamplingRate {
+        SR_11025,             // Low sampling rate
+        SR_22050,              // medium sampling rate.
+        SR_44100,            // High sampling rate
+    };
+
     enum GameVariable {
 
         /* Defined variables */

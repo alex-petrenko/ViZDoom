@@ -142,6 +142,9 @@ namespace vizdoom {
         if (!this->doomRunning) {
 
             try {
+//                this->audioLength = 1260/(44100/this->sampling_fre);
+
+
                 this->generateInstanceId();
 
                 // Generate Doom process's arguments
@@ -1450,6 +1453,12 @@ namespace vizdoom {
 
     void DoomController::setSoundSamplingFreq(unsigned int i) {
         this->sampling_fre = i;
+        this->audioLength = 1260/(44100/this->sampling_fre);
+
+    }
+
+    unsigned int DoomController::getSoundSamplingFreq() {
+        return this->sampling_fre;
 
     }
 }

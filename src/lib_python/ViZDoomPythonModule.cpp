@@ -370,6 +370,12 @@ PYBIND11_MODULE(vizdoom, vz){
         ENUM_VAL_2_PYT(PLAYER16_FRAGCOUNT)
         .export_values();
 
+    enum_<SamplingRate>(vz, "SamplingRate")
+            ENUM_VAL_2_PYT(SR_11025)
+            ENUM_VAL_2_PYT(SR_22050)
+            ENUM_VAL_2_PYT(SR_44100)
+            .export_values();
+
 
     /* Structs */
     /*----------------------------------------------------------------------------------------------------------------*/
@@ -540,6 +546,7 @@ PYBIND11_MODULE(vizdoom, vz){
         .def("set_console_enabled",&DoomGamePython::setConsoleEnabled)
         .def("set_sound_enabled",&DoomGamePython::setSoundEnabled)
         .def("set_sound_sampling_freq",&DoomGamePython::setSoundSamplingFreq)
+        .def("get_sound_sampling_freq",&DoomGamePython::getSoundSamplingFreq)
 
 
         .def("set_screen_resolution", &DoomGamePython::setScreenResolution)

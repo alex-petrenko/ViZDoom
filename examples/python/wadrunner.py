@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
     # -----------------------------------------------------------------------------------------------------------------------
     # Turns on the sound. (turned off by default)
-    game.set_sound_enabled(True)
+    game.set_sound_enabled(is_audio)
     # -----------------------------------------------------------------------------------------------------------------------
 
     # Sets the living reward (for each move) to -1
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
     # Run this many episodes
     episodes = 1
-    f_skip = 4
+    f_skip = 12
     # Sets time that will pause the engine after each action (in seconds)
     # Without this everything would go too fast for you to keep track of what's happening.
     sleep_time = 1.0 / vzd.DEFAULT_TICRATE  # = 0.028
@@ -185,7 +185,7 @@ if __name__ == "__main__":
                     # plot.specgram(audio[:,0])
                     # plot.show()
 
-                    screens.append(screen_buf[:,:,::-1])
+            screens.append(screen_buf[:,:,::-1])
                 # print(max(audio))
 
             # Games variables can be also accessed via:
@@ -246,26 +246,30 @@ if __name__ == "__main__":
     print(d)
     print("Frame rate:")
     print(frames/(en_tim - st_tim))
-    print("Total audio length is: {}".format(len(m[:,0])))
-    plot.specgram(m[:,0])
-    plot.savefig('trials/'+ str(ran) +'/specl.png')
-    plot.specgram(m[:,1])
-    plot.savefig('trials/'+ str(ran) +'/specr.png')
     if is_audio:
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        out = cv2.VideoWriter('trials/'+ str(ran) +'/video.mp4', fourcc, vzd.DEFAULT_TICRATE/f_skip, (640,480))
-        for i in range(len(screens)):
-            out.write(screens[i])
-        out.release()
+        print("Total audio length is: {}".format(len(m[:,0])))
+        plot.specgram(m[:,0])
+        plot.savefig('trials/'+ str(ran) +'/specl.png')
+        plot.specgram(m[:,1])
+        plot.savefig('trials/'+ str(ran) +'/specr.png')
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter('trials/'+ str(ran) +'/video.mp4', fourcc, vzd.DEFAULT_TICRATE/f_skip, (640,480))
+    for i in range(len(screens)):
+        out.write(screens[i])
+    out.release()
+    if is_audio:
         # write('trials/'+ str(ran) +'/audio.wav', 44100/2, m)
         write('trials/'+ str(ran) +'/audio.wav', 22050, m)
-    # write('stereo_test'+ str(en_tim - st_tim) +'.wav', 44100, wa.T)
-    # wavio.write('stereo_test'+ str(en_tim - st_tim) +'.wav',)
-    print("total audio time should be :" + str(d))
+        # write('stereo_test'+ str(en_tim - st_tim) +'.wav', 44100, wa.T)
+        # wavio.write('stereo_test'+ str(en_tim - st_tim) +'.wav',)
+        print("total audio time should be :" + str(d))
     # It will be done automatically anyway but sometimes you need to do it in the middle of the program...
     my_clip = mpe.VideoFileClip('trials/'+ str(ran) +'/video.mp4')
-    audio_background = mpe.AudioFileClip('trials/'+ str(ran) +'/audio.wav')
-    # final_audio = mpe.CompositeAudioClip([my_clip.audio, audio_background])
-    final_clip = my_clip.set_audio(audio_background)
+    if is_audio:
+        audio_background = mpe.AudioFileClip('trials/'+ str(ran) +'/audio.wav')
+        # final_audio = mpe.CompositeAudioClip([my_clip.audio, audio_background])
+        final_clip = my_clip.set_audio(audio_background)
+    else:
+        final_clip = my_clip
     final_clip.write_videofile("trials/"+ str(ran) +"/movie.mp4")
     game.close()

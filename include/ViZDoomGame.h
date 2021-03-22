@@ -202,7 +202,9 @@ namespace vizdoom {
 
         unsigned int tic_size;
 
-        void setSoundSamplingFreq(unsigned int freq);
+        void setSoundSamplingFreq(SamplingRate samplingRate);
+
+        unsigned int getSoundSamplingFreq();
 
     protected:
 
