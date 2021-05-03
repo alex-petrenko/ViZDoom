@@ -40,6 +40,7 @@ EXTERN_CVAR (Bool, viz_depth)
 EXTERN_CVAR (Bool, viz_labels)
 EXTERN_CVAR (Bool, viz_automap)
 EXTERN_CVAR (Bool, viz_nocheat)
+EXTERN_CVAR (Bool, viz_nosound)
 
 void VIZ_ScreenInit() {
 
@@ -178,7 +179,9 @@ void VIZ_ScreenUpdateSM(){
         SMBufferSize[3] = vizScreenSize;
     }
 
-    VIZ_SMUpdate(SMBuffersSize + buffer_len * sizeof(short) * 2);
+    if (!*viz_nosound) {
+        VIZ_SMUpdate(SMBuffersSize + audioBufferLen * sizeof(short) * 2);
+    }
 
     try {
         for (int i = 0; i != 4; ++i) {
