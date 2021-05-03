@@ -190,7 +190,11 @@ namespace vizdoom {
                 *this->input = *this->_input;
 
                 this->mapLastTic = this->gameState->MAP_TIC;
+                this->largerAudioBuffer = std::make_shared<std::deque<uint16_t>> ();
 
+                for (unsigned int j = 0; j < audioLength * 2 * 4; ++j) {
+                    this->largerAudioBuffer->push_front(0);
+                }
             }
             catch (...) {
                 this->close();
@@ -295,7 +299,6 @@ namespace vizdoom {
         }
 
         int ticsMade = 0;
-        this->largerAudioBuffer = NULL;
         for (unsigned int i = 0; i < tics; ++i) {
             if (i == tics - 1) this->tic(update);
             else this->tic(false);
@@ -305,19 +308,13 @@ namespace vizdoom {
                 uint16_t *abuf = this->getAudioBuffer();
 
                 const std::shared_ptr<std::vector<uint16_t>> &temp_aud = std::make_shared<std::vector<uint16_t>>(abuf, abuf +
-                                                                                                                 audioSize);
-                if (!this->largerAudioBuffer) {
-                    this->largerAudioBuffer = temp_aud;
-                } else {
-                    auto origSize = this->largerAudioBuffer->size();
-                    auto addElements = audioLength * 2;
-                    this->largerAudioBuffer->resize(this->largerAudioBuffer->size() + addElements);
-
-                    constexpr auto elementSize = sizeof(uint16_t);
-                    memcpy(this->largerAudioBuffer->data() + origSize, temp_aud->data(), addElements * sizeof(uint16_t));
+                                                                                                                       audioSize);
+                for (unsigned int j = 0; j < (audioLength * 2); j++) {
+                    this->largerAudioBuffer->emplace_back(temp_aud->data()[j]);
+                    this->largerAudioBuffer->pop_front();
                 }
-            }
 
+            }
 
 
                     ++ticsMade;
