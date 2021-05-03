@@ -309,9 +309,12 @@ namespace vizdoom {
                 if (!this->largerAudioBuffer) {
                     this->largerAudioBuffer = temp_aud;
                 } else {
-                    for (unsigned int j = 0; j < (audioLength * 2); j++) {
-                        this->largerAudioBuffer->push_back(temp_aud->data()[j]);
-                    }
+                    auto origSize = this->largerAudioBuffer->size();
+                    auto addElements = audioLength * 2;
+                    this->largerAudioBuffer->resize(this->largerAudioBuffer->size() + addElements);
+
+                    constexpr auto elementSize = sizeof(uint16_t);
+                    memcpy(this->largerAudioBuffer->data() + origSize, temp_aud->data(), addElements * sizeof(uint16_t));
                 }
             }
 
