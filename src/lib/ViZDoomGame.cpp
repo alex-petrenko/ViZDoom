@@ -165,7 +165,6 @@ namespace vizdoom {
         // TODO maybe set lastReward to 0 if finished?
         if (this->doomController->isTicPossible()) {
             try {
-                this->tic_size = tics;
                 this->doomController->tics(tics, updateState);
                 if (updateState) this->updateState();
             }
@@ -237,13 +236,13 @@ namespace vizdoom {
             int channels = this->getScreenChannels();
             int width = this->getScreenWidth();
             int height = this->getScreenHeight();
-            int audioLength = this->getAudioLength();
+//            int audioLength = this->getAudioLength();
 
 
             size_t graySize = static_cast<size_t>(width * height);
             size_t colorSize = graySize *channels;
 
-            size_t audioSize = static_cast<size_t>(audioLength * 2);
+//            size_t audioSize = static_cast<size_t>(audioLength * 2);
 
             uint8_t *buf = this->doomController->getScreenBuffer();
             this->state->screenBuffer = std::make_shared<std::vector<uint8_t>>(buf, buf + colorSize);
@@ -642,6 +641,8 @@ namespace vizdoom {
             CASE_SF(44100)
         }
         this->doomController->setSoundSamplingFreq(samp_freq);
+
+        this->doomController->addCustomArg("+samp_fre " + std::to_string(samp_freq));
     }
 
     unsigned int  DoomGame::getSoundSamplingFreq() { return this->doomController->getSoundSamplingFreq(); }

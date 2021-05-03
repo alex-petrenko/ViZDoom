@@ -1899,7 +1899,7 @@ void S_RestoreEvictedChannels()
 // Add music & sounds to inuput buffer
 //==========================================================================
 
-void S_Get_render (short test_buffer[][2], int buf_len)
+void S_Get_render (int *test_buffer, int buf_len)
 {
     GSnd->getrenderbuffer(test_buffer, buf_len);
 }

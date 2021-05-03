@@ -75,8 +75,11 @@ namespace vizdoom {
             this->pyState->screenBuffer = this->dataToNumpyArray(colorDims, this->colorShape, NPY_UBYTE, this->state->screenBuffer->data());
         else this->pyState->screenBuffer = pyb::none();
 
-        if (this->state->audioBuffer != nullptr)
-            this->pyState->audioBuffer = this->dataToNumpyArray(2, this->audioShape, NPY_SHORT, this->state->audioBuffer->data());
+        if (this->state->audioBuffer != nullptr) {
+            const std::shared_ptr<std::vector<uint16_t>> &temp_vec = std::make_shared<std::vector<uint16_t>>(
+                    this->state->audioBuffer->begin(), this->state->audioBuffer->end());
+            this->pyState->audioBuffer = this->dataToNumpyArray(2, this->audioShape, NPY_SHORT, temp_vec->data());
+        }
         else this->pyState->audioBuffer = pyb::none();
 
         if (this->state->depthBuffer != nullptr)
@@ -223,7 +226,7 @@ namespace vizdoom {
         this->grayShape[0] = height;
         this->grayShape[1] = width;
 
-        this->audioShape[0] = audioLength * this->tic_size;
+        this->audioShape[0] = audioLength * 4;
         this->audioShape[1] = 2;
     }
 

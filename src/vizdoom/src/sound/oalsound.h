@@ -213,7 +213,7 @@ private:
 
 	ALCdevice *InitDevice();
     ALCdevice *InitSoftDevice();
-    void getrenderbuffer(short test_buffer[][2], int buffer_len);
+    void getrenderbuffer(int *test_buffer, int buffer_len);
     LPALCRENDERSAMPLESSOFT alcRenderSamplesSOFT;
     PFNALCSETTHREADCONTEXTPROC alcSetThreadContext;
     LPALCLOOPBACKOPENDEVICESOFT alcLoopbackOpenDeviceSOFT;

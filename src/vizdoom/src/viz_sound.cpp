@@ -2,8 +2,11 @@
 #include "viz_sound.h"
 #include "viz_defines.h"
 #include "viz_main.h"
+#include "viz_labels.h"
 
-unsigned int vizSoundLen;
+EXTERN_CVAR (Int, samp_fre)
+
+
 
 int *vizAudioSM = NULL;
 
@@ -11,7 +14,7 @@ int *vizAudioSM = NULL;
 void VIZ_SoundInit() {
     try {
         VIZSMRegion *bufferRegion = &vizSMRegion[VIZ_SM_AUDIO_NUM];
-        VIZ_SMCreateRegion(bufferRegion, false, VIZ_SMGetRegionOffset(bufferRegion), 2 * sizeof(short) * buffer_len);
+        VIZ_SMCreateRegion(bufferRegion, false, VIZ_SMGetRegionOffset(bufferRegion), 2 * sizeof(short) * 1260/(44100/(*samp_fre)));
 //        printf("Created audio buffer");
         memset(bufferRegion->address, 0, bufferRegion->size);
 
@@ -27,7 +30,5 @@ void VIZ_SoundInit() {
 }
 
 void VIZ_CopySoundBuffer() {
-    short test_buffer[buffer_len][2];
-    S_Get_render(test_buffer, buffer_len);
-    memcpy((void *) vizAudioSM, (void *) test_buffer, 2 * sizeof(short) * buffer_len);
+    S_Get_render(vizAudioSM, 1260/(44100/(*samp_fre)));
 }

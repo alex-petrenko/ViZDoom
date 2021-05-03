@@ -79,9 +79,13 @@ extern HINSTANCE g_hInst;
 #include "doomdef.h"
 
 EXTERN_CVAR (Float, snd_sfxvolume)
+EXTERN_CVAR (Int, samp_fre)
+
 CVAR (Int, snd_samplerate, 0, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
 CVAR (Int, snd_buffersize, 0, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
 CVAR (String, snd_output, "default", CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
+
+//CVAR (Int, samp_fre, 0, 0)
 
 #ifndef NO_FMOD
 #define DEF_BACKEND "fmod"
@@ -295,7 +299,7 @@ void I_InitSound ()
 		#ifndef NO_OPENAL
 			if (IsOpenALPresent())
 			{
-				GSnd = new OpenALSoundRenderer( sampling_frequency);
+				GSnd = new OpenALSoundRenderer( samp_fre);
 			}
 		#endif
 		#ifndef NO_FMOD

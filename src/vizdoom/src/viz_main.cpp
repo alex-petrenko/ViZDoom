@@ -109,6 +109,9 @@ CVAR (Bool, viz_spectator, false, CVAR_DEMOSAVE | CVAR_USERINFO) // players[play
 CVAR (Int, viz_afk_timeout, 60, CVAR_DEMOSAVE | CVAR_SERVERINFO) // In seconds
 CVAR (Int, viz_connect_timeout, 60, CVAR_NOSET) // In seconds
 
+// sound related
+CVAR (Int, samp_fre, 0, 0)
+
 CCMD(viz_set_seed){
     viz_seed.CmdSet(argv[1]);
     rngseed = atoi(argv[1]);

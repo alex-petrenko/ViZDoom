@@ -190,7 +190,11 @@ namespace vizdoom {
                 *this->input = *this->_input;
 
                 this->mapLastTic = this->gameState->MAP_TIC;
+                this->largerAudioBuffer = std::make_shared<std::deque<uint16_t>> ();
 
+                for (unsigned int j = 0; j < audioLength * 2 * 4; ++j) {
+                    this->largerAudioBuffer->push_front(0);
+                }
             }
             catch (...) {
                 this->close();
@@ -295,26 +299,22 @@ namespace vizdoom {
         }
 
         int ticsMade = 0;
-        this->largerAudioBuffer = NULL;
         for (unsigned int i = 0; i < tics; ++i) {
-            if (i == tics - 1) this->tic(true);
+            if (i == tics - 1) this->tic(update);
             else this->tic(false);
 
             if (!this->noSound) {
                 size_t audioSize = static_cast<size_t>(audioLength * 2);
-                short *abuf = this->getAudioBuffer();
+                uint16_t *abuf = this->getAudioBuffer();
 
-                const std::shared_ptr<std::vector<short>> &temp_aud = std::make_shared<std::vector<short>>(abuf, abuf +
-                                                                                                                 audioSize);
-                if ((this->largerAudioBuffer == NULL)) {
-                    this->largerAudioBuffer = temp_aud;
-                } else {
-                    for (unsigned int j = 0; j < (audioLength * 2); j++) {
-                        this->largerAudioBuffer->push_back(temp_aud->data()[j]);
-                    }
+                const std::shared_ptr<std::vector<uint16_t>> &temp_aud = std::make_shared<std::vector<uint16_t>>(abuf, abuf +
+                                                                                                                       audioSize);
+                for (unsigned int j = 0; j < (audioLength * 2); j++) {
+                    this->largerAudioBuffer->emplace_back(temp_aud->data()[j]);
+                    this->largerAudioBuffer->pop_front();
                 }
-            }
 
+            }
 
 
                     ++ticsMade;
@@ -897,7 +897,7 @@ namespace vizdoom {
 
     uint8_t *const DoomController::getScreenBuffer() { return this->screenBuffer; }
 
-    short *const DoomController::getAudioBuffer() { return this->audioBuffer; }
+    uint16_t *const DoomController::getAudioBuffer() { return this->audioBuffer; }
 
     AudioBufferPtr DoomController::getLargerAudioBuffer() { return this->largerAudioBuffer; }
 
