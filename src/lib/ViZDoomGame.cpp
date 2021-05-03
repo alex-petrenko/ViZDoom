@@ -237,13 +237,13 @@ namespace vizdoom {
             int channels = this->getScreenChannels();
             int width = this->getScreenWidth();
             int height = this->getScreenHeight();
-            int audioLength = this->getAudioLength();
+//            int audioLength = this->getAudioLength();
 
 
             size_t graySize = static_cast<size_t>(width * height);
             size_t colorSize = graySize *channels;
 
-            size_t audioSize = static_cast<size_t>(audioLength * 2);
+//            size_t audioSize = static_cast<size_t>(audioLength * 2);
 
             uint8_t *buf = this->doomController->getScreenBuffer();
             this->state->screenBuffer = std::make_shared<std::vector<uint8_t>>(buf, buf + colorSize);

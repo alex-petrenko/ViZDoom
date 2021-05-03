@@ -297,16 +297,16 @@ namespace vizdoom {
         int ticsMade = 0;
         this->largerAudioBuffer = NULL;
         for (unsigned int i = 0; i < tics; ++i) {
-            if (i == tics - 1) this->tic(true);
+            if (i == tics - 1) this->tic(update);
             else this->tic(false);
 
             if (!this->noSound) {
                 size_t audioSize = static_cast<size_t>(audioLength * 2);
-                short *abuf = this->getAudioBuffer();
+                uint16_t *abuf = this->getAudioBuffer();
 
-                const std::shared_ptr<std::vector<short>> &temp_aud = std::make_shared<std::vector<short>>(abuf, abuf +
+                const std::shared_ptr<std::vector<uint16_t>> &temp_aud = std::make_shared<std::vector<uint16_t>>(abuf, abuf +
                                                                                                                  audioSize);
-                if ((this->largerAudioBuffer == NULL)) {
+                if (!this->largerAudioBuffer) {
                     this->largerAudioBuffer = temp_aud;
                 } else {
                     for (unsigned int j = 0; j < (audioLength * 2); j++) {
@@ -897,7 +897,7 @@ namespace vizdoom {
 
     uint8_t *const DoomController::getScreenBuffer() { return this->screenBuffer; }
 
-    short *const DoomController::getAudioBuffer() { return this->audioBuffer; }
+    uint16_t *const DoomController::getAudioBuffer() { return this->audioBuffer; }
 
     AudioBufferPtr DoomController::getLargerAudioBuffer() { return this->largerAudioBuffer; }
 

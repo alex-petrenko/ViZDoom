@@ -697,7 +697,7 @@ ALCdevice *OpenALSoundRenderer::InitDevice()
     return device;
 }
 
-void OpenALSoundRenderer::getrenderbuffer(short test_buffer[][2], int buffer_len)
+void OpenALSoundRenderer::getrenderbuffer(uint16_t test_buffer[][2], int buffer_len)
 {
     alcRenderSamplesSOFT(Device, test_buffer, buffer_len);
 }

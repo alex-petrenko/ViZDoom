@@ -35,7 +35,7 @@ namespace vizdoom{
     typedef std::vector<uint8_t> Buffer;
     typedef std::shared_ptr<Buffer> BufferPtr;
 
-    typedef std::vector<short> AudioBuffer;
+    typedef std::vector<uint16_t> AudioBuffer;
     typedef std::shared_ptr<AudioBuffer> AudioBufferPtr;
 
     struct Label {
