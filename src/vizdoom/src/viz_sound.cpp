@@ -27,7 +27,5 @@ void VIZ_SoundInit() {
 }
 
 void VIZ_CopySoundBuffer() {
-    uint16_t test_buffer[buffer_len][2];
-    S_Get_render(test_buffer, buffer_len);
-    memcpy((void *) vizAudioSM, (void *) test_buffer, 2 * sizeof(uint16_t) * buffer_len);
+    S_Get_render(vizAudioSM, buffer_len);
 }
