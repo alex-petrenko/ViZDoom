@@ -641,6 +641,8 @@ namespace vizdoom {
             CASE_SF(44100)
         }
         this->doomController->setSoundSamplingFreq(samp_freq);
+
+        this->doomController->addCustomArg("+samp_fre " + std::to_string(samp_freq));
     }
 
     unsigned int  DoomGame::getSoundSamplingFreq() { return this->doomController->getSoundSamplingFreq(); }
