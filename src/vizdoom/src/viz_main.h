@@ -31,8 +31,6 @@ extern bool vizUpdate;
 extern unsigned int vizLastUpdate;
 extern int vizNodesRecv[VIZ_MAX_PLAYERS];
 
-const int sampling_frequency = 22050;
-const int audioBufferLen = 1260/(44100/sampling_frequency);
 
 void VIZ_Init();
 

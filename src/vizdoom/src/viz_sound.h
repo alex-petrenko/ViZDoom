@@ -8,7 +8,6 @@
 #include "s_sound.h"
 #include <stddef.h>
 
-extern unsigned int vizSoundLen;
 
 void VIZ_SoundInit();
 void VIZ_CopySoundBuffer();

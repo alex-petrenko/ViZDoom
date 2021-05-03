@@ -41,6 +41,7 @@ EXTERN_CVAR (Bool, viz_labels)
 EXTERN_CVAR (Bool, viz_automap)
 EXTERN_CVAR (Bool, viz_nocheat)
 EXTERN_CVAR (Bool, viz_nosound)
+EXTERN_CVAR (Int, samp_fre)
 
 void VIZ_ScreenInit() {
 
@@ -180,7 +181,8 @@ void VIZ_ScreenUpdateSM(){
     }
 
     if (!*viz_nosound) {
-        VIZ_SMUpdate(SMBuffersSize + audioBufferLen * sizeof(short) * 2);
+
+        VIZ_SMUpdate(SMBuffersSize + 1260/(44100/samp_fre) * sizeof(short) * 2);
     }
 
     try {
