@@ -165,7 +165,6 @@ namespace vizdoom {
         // TODO maybe set lastReward to 0 if finished?
         if (this->doomController->isTicPossible()) {
             try {
-                this->tic_size = tics;
                 this->doomController->tics(tics, updateState);
                 if (updateState) this->updateState();
             }

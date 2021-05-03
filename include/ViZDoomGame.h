@@ -200,8 +200,6 @@ namespace vizdoom {
         void setAudioLength(unsigned int audioLength);
 
 
-        unsigned int tic_size;
-
         void setSoundSamplingFreq(SamplingRate samplingRate);
 
         unsigned int getSoundSamplingFreq();
