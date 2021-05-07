@@ -277,6 +277,9 @@ namespace vizdoom {
 //        unsigned int sampling_rate;
         unsigned int getSoundSamplingFreq();
 
+        void setFrameNumber(unsigned int i);
+
+        unsigned int frameNumber;
     private:
 
         /* Flow */

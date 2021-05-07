@@ -644,6 +644,11 @@ namespace vizdoom {
 
         this->doomController->addCustomArg("+samp_fre " + std::to_string(samp_freq));
     }
+    void DoomGame::setFrameNumber(int frames) {
+        this->doomController->setFrameNumber(frames);
+
+    }
+
 
     unsigned int  DoomGame::getSoundSamplingFreq() { return this->doomController->getSoundSamplingFreq(); }
 

@@ -201,6 +201,7 @@ namespace vizdoom {
 
 
         void setSoundSamplingFreq(SamplingRate samplingRate);
+        void setFrameNumber(int frames);
 
         unsigned int getSoundSamplingFreq();
 

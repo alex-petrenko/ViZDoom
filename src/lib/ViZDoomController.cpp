@@ -192,7 +192,7 @@ namespace vizdoom {
                 this->mapLastTic = this->gameState->MAP_TIC;
                 this->largerAudioBuffer = std::make_shared<std::deque<uint16_t>> ();
 
-                for (unsigned int j = 0; j < audioLength * 2 * 4; ++j) {
+                for (unsigned int j = 0; j < audioLength * 2 * this->frameNumber; ++j) {
                     this->largerAudioBuffer->push_front(0);
                 }
             }
@@ -1461,4 +1461,9 @@ namespace vizdoom {
         return this->sampling_fre;
 
     }
+    void DoomController::setFrameNumber(unsigned int i) {
+        this->frameNumber = i;
+
+    }
+
 }
