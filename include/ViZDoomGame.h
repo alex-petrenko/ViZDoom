@@ -192,18 +192,16 @@ namespace vizdoom {
         int getScreenWidth();
         int getScreenHeight();
         int getScreenChannels();
-        int getAudioLength();
+        int getAudioSamplesPerTic();
         size_t getScreenDepth();
         size_t getScreenPitch();
         size_t getScreenSize();
 
-        void setAudioLength(unsigned int audioLength);
-
-
         void setSoundSamplingFreq(SamplingRate samplingRate);
-        void setFrameNumber(int frames);
+        int getSoundSamplingFreq();
 
-        unsigned int getSoundSamplingFreq();
+        void setSoundObservationNumFrames(int frames);
+        int getSoundObservationNumFrames();
 
     protected:
 

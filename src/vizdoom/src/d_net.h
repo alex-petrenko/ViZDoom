@@ -27,7 +27,6 @@
 #include "doomdef.h"
 #include "d_ticcmd.h"
 
-
 //
 // Network play related stuff.
 // There is a data struct that stores network
@@ -112,7 +111,7 @@ void NetUpdate (void);
 void D_QuitNetGame (void);
 
 //? how many ticks to run?
-void TryRunTics (void);
+void TryRunTics ();
 
 //Use for checking to see if the netgame has stalled
 void Net_CheckLastReceived(int);

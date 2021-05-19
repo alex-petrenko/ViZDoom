@@ -29,15 +29,14 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <queue>
 
 namespace vizdoom{
 
     typedef std::vector<uint8_t> Buffer;
     typedef std::shared_ptr<Buffer> BufferPtr;
 
-    typedef std::deque<uint16_t> AudioBuffer;
-    typedef std::shared_ptr<AudioBuffer> AudioBufferPtr;
+    typedef std::vector<uint16_t> ShortBuffer;
+    typedef std::shared_ptr<ShortBuffer> ShortBufferPtr;
 
     struct Label {
         // Label properties
@@ -109,7 +108,7 @@ namespace vizdoom{
         std::vector<double> gameVariables;
 
         BufferPtr screenBuffer;
-        AudioBufferPtr audioBuffer;
+        ShortBufferPtr audioBuffer;
         BufferPtr depthBuffer;
         BufferPtr labelsBuffer;
         BufferPtr automapBuffer;

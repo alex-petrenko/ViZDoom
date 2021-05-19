@@ -190,7 +190,6 @@ namespace vizdoom {
     }
 
     void DoomGame::updateState() {
-
         /* Update last action */
         if(this->doomController->isAllowDoomInput() || this->doomController->isReplaying()) {
             for (unsigned int i = 0; i < this->availableButtons.size(); ++i) {
@@ -236,19 +235,32 @@ namespace vizdoom {
             int channels = this->getScreenChannels();
             int width = this->getScreenWidth();
             int height = this->getScreenHeight();
-//            int audioLength = this->getAudioLength();
-
 
             size_t graySize = static_cast<size_t>(width * height);
             size_t colorSize = graySize *channels;
-
-//            size_t audioSize = static_cast<size_t>(audioLength * 2);
 
             uint8_t *buf = this->doomController->getScreenBuffer();
             this->state->screenBuffer = std::make_shared<std::vector<uint8_t>>(buf, buf + colorSize);
 
             // This buffer contains all the sound that happened between tics
-            this->state->audioBuffer = this->doomController->getLargerAudioBuffer();
+            if (!this->doomController->getNoSound()) {
+                const uint16_t *audioBuf = this->doomController->getAudioBuffer();
+                const int audioSamplesPerTic = this->getAudioSamplesPerTic(),
+                          sizePerTic = SOUND_NUM_CHANNELS * audioSamplesPerTic,
+                          totalBufferSize = sizePerTic * MAX_SOUND_FRAMES_TO_STORE,
+                          audioObsSize = sizePerTic * this->getSoundObservationNumFrames(),
+                          audioOffset = totalBufferSize - audioObsSize;
+
+                // It is not apparent why this should be a shared pointer and not just vector,
+                // but this follows the same logic as any other buffer here (i.e. see screenBuffer).
+
+                // Audio buffer on Doom side contains MAX_SOUND_FRAMES_TO_STORE of tics of sound, and we want
+                // getSoundObservationNumFrames tics of sound. So we just copy the last tics from the right
+                // side of the buffer.
+                this->state->audioBuffer = std::make_shared<std::vector<uint16_t>>(audioBuf + audioOffset,
+                                                                                   audioBuf + audioOffset +
+                                                                                   audioObsSize);
+            }
 
             if (this->doomController->isDepthBufferEnabled()) {
                 buf = this->doomController->getDepthBuffer();
@@ -572,8 +584,6 @@ namespace vizdoom {
 
     void DoomGame::setScreenFormat(ScreenFormat format) { this->doomController->setScreenFormat(format); }
 
-    void DoomGame::setAudioLength(unsigned int audioLength) { this->doomController->setAudioLength(audioLength); }
-
     bool DoomGame::isDepthBufferEnabled() { return this->doomController->isDepthBufferEnabled(); }
 
     void DoomGame::setDepthBufferEnabled(bool depthBuffer) { this->doomController->setDepthBufferEnabled(depthBuffer); }
@@ -631,9 +641,8 @@ namespace vizdoom {
 
     void DoomGame::setSoundEnabled(bool sound) { this->doomController->setNoSound(!sound); }
 
-//    void DoomGame::setSoundSamplingFreq(unsigned  int freq) { this->doomController->setSoundSamplingFreq(freq); }
     void DoomGame::setSoundSamplingFreq(SamplingRate samplingRate) {
-        unsigned int samp_freq = 0;
+        int samp_freq = 0;
 #define CASE_SF(w) case SR_##w : samp_freq = w; break;
         switch (samplingRate) {
             CASE_SF(11025)
@@ -644,13 +653,17 @@ namespace vizdoom {
 
         this->doomController->addCustomArg("+samp_fre " + std::to_string(samp_freq));
     }
-    void DoomGame::setFrameNumber(int frames) {
-        this->doomController->setFrameNumber(frames);
 
+    void DoomGame::setSoundObservationNumFrames(int frames) {
+        this->doomController->setSoundObservationNumFrames(frames);
+    }
+
+    int DoomGame::getSoundObservationNumFrames() {
+        return this->doomController->getSoundObservationNumFrames();
     }
 
 
-    unsigned int  DoomGame::getSoundSamplingFreq() { return this->doomController->getSoundSamplingFreq(); }
+    int DoomGame::getSoundSamplingFreq() { return this->doomController->getSoundSamplingFreq(); }
 
 
 
@@ -658,7 +671,7 @@ namespace vizdoom {
 
     int DoomGame::getScreenHeight() { return this->doomController->getScreenHeight(); }
 
-    int DoomGame::getAudioLength() { return this->doomController->getAudioLength(); }
+    int DoomGame::getAudioSamplesPerTic() { return this->doomController->getAudioSamplesPerTic(); }
 
     int DoomGame::getScreenChannels() { return this->doomController->getScreenChannels(); }
 

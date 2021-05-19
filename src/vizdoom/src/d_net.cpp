@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <fstream>
 #include <stddef.h>
 
 #include "version.h"
@@ -1816,7 +1817,7 @@ void D_QuitNetGame (void)
 //
 // TryRunTics
 //
-void TryRunTics (void)
+void TryRunTics ()
 {
 	int 		i;
 	int 		lowtic;
@@ -1992,6 +1993,7 @@ void TryRunTics (void)
 			NetUpdate ();	// check for new console commands
 		}
 		P_PredictPlayer(&players[consoleplayer]);
+
 		if(!*viz_controlled || !*viz_nosound) S_UpdateSounds (players[consoleplayer].camera);	// move positional sounds
 	}
 }

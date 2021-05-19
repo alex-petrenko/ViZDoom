@@ -36,5 +36,12 @@ namespace vizdoom{
     const unsigned int DELTA_BUTTON_COUNT = 5;
     const unsigned int BUTTON_COUNT = 43;
 
+    // these should correspond to sounddef.h in VizDoom (would be better to include it directly...)
+    const int DEFAULT_SOUND_FREQ = 44100;
+    const int DEFAULT_SAMPLES_TIC = DEFAULT_SOUND_FREQ / DEFAULT_TICRATE;
+    const int SOUND_NUM_CHANNELS = 2;  // it is stereo by default
+
+    // corresponds to viz_sound.h, maximum number of tics we can query
+    const int MAX_SOUND_FRAMES_TO_STORE = 4;
 }
 #endif

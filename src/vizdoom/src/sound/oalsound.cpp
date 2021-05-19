@@ -697,9 +697,9 @@ ALCdevice *OpenALSoundRenderer::InitDevice()
     return device;
 }
 
-void OpenALSoundRenderer::getrenderbuffer(int *test_buffer, int buffer_len)
+void OpenALSoundRenderer::getrenderbuffer(void *targetBuffer, int numSamples)
 {
-    alcRenderSamplesSOFT(Device, test_buffer, buffer_len);
+    alcRenderSamplesSOFT(Device, targetBuffer, numSamples);
 }
 
 template<typename T>

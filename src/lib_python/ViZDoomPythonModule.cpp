@@ -546,13 +546,13 @@ PYBIND11_MODULE(vizdoom, vz){
         .def("set_console_enabled",&DoomGamePython::setConsoleEnabled)
         .def("set_sound_enabled",&DoomGamePython::setSoundEnabled)
         .def("set_sound_sampling_freq",&DoomGamePython::setSoundSamplingFreq)
-        .def("set_frame_number",&DoomGamePython::setFrameNumber)
         .def("get_sound_sampling_freq",&DoomGamePython::getSoundSamplingFreq)
+        .def("set_sound_observation_num_frames",&DoomGamePython::setSoundObservationNumFrames)
+        .def("get_sound_observation_num_frames",&DoomGamePython::getSoundObservationNumFrames)
 
 
         .def("set_screen_resolution", &DoomGamePython::setScreenResolution)
         .def("set_screen_format", &DoomGamePython::setScreenFormat)
-        .def("set_audio_length", &DoomGamePython::setAudioLength)
 
         .def("is_depth_buffer_enabled", &DoomGamePython::isDepthBufferEnabled)
         .def("set_depth_buffer_enabled", &DoomGamePython::setDepthBufferEnabled)

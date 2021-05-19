@@ -165,7 +165,6 @@ void VIZ_Init(){
         VIZ_GameStateInit();
         VIZ_InputInit();
         VIZ_ScreenInit();
-        VIZ_SoundInit();
 
         VIZ_GameStateSMUpdate();
 
@@ -235,9 +234,10 @@ void VIZ_Tic(){
                 VIZ_Update();
             }
 
-//            Sound buffer will always be updated irrespective of update signal
+            // Sound buffer will always be updated irrespective of update signal
             if (!*viz_nosound)
                 VIZ_CopySoundBuffer();
+
             VIZ_MQSend(VIZ_MSG_CODE_DOOM_DONE);
             vizNextTic = false;
         }
@@ -265,8 +265,12 @@ void VIZ_Update(){
     VIZ_D_ScreenDisplay();
     VIZ_ScreenUpdate();
     VIZ_GameStateUpdate();
-//    if (!*viz_nosound)
-//        VIZ_CopySoundBuffer();
+
+    // We do not update sound buffer here, because the sound buffer needs to be updated irrespective of whether
+    // we get the game state or not, otherwise we will be missing the audio frames in between frameskips.
+    // While this is okay for RGB observations, interrupting audio stream makes little sense.
+    // if (!*viz_nosound)
+    //     VIZ_CopySoundBuffer();
 
     vizLastUpdate = VIZ_TIME;
     vizUpdate = false;

@@ -155,6 +155,7 @@ namespace vizdoom {
 
         void setNoConsole(bool console);
         void setNoSound(bool noSound);
+        bool getNoSound() const;
 
         void addCustomArg(std::string arg);
         void clearCustomArgs();
@@ -183,8 +184,7 @@ namespace vizdoom {
         unsigned int getScreenHeight();
         void setScreenHeight(unsigned int height);
         ScreenFormat getScreenFormat();
-        unsigned int getAudioLength();
-        void setAudioLength(unsigned int audioLength);
+        int getAudioSamplesPerTic();
 
         void setScreenFormat(ScreenFormat format);
         unsigned int getScreenChannels();
@@ -268,18 +268,13 @@ namespace vizdoom {
         unsigned int getPlayerLastActionTic(unsigned int playerNumber);
         unsigned int getPlayerLastKillTic(unsigned int playerNumber);
 
-        AudioBufferPtr getLargerAudioBuffer();
+        void setSoundSamplingFreq(int freq);
+        int getSoundSamplingFreq() const;
 
-        AudioBufferPtr largerAudioBuffer;
+        void setSoundObservationNumFrames(int numFrames);
+        int getSoundObservationNumFrames() const;
 
-        void setSoundSamplingFreq(unsigned int i);
-
-//        unsigned int sampling_rate;
-        unsigned int getSoundSamplingFreq();
-
-        void setFrameNumber(unsigned int i);
-
-        unsigned int frameNumber;
+        int soundObservationNumFrames;
     private:
 
         /* Flow */
@@ -359,7 +354,7 @@ namespace vizdoom {
         /*------------------------------------------------------------------------------------------------------------*/
 
         unsigned int screenWidth, screenHeight, screenChannels, screenDepth;
-        unsigned int audioLength;
+        int audioSamplesPerTic;
         size_t screenPitch, screenSize;
         ScreenFormat screenFormat;
         bool depth;
@@ -404,8 +399,7 @@ namespace vizdoom {
         std::vector<std::string> customArgs;
         std::vector<std::string> doomArgs;
 
-        unsigned int sampling_fre;
-
+        int sampling_fre;
     };
 
 }
