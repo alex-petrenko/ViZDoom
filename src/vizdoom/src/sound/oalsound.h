@@ -67,8 +67,6 @@ class OpenALSoundStream;
 class OpenALSoundRenderer : public SoundRenderer
 {
 public:
-	OpenALSoundRenderer();
-
     OpenALSoundRenderer(unsigned int sampling_freq);
 
     virtual ~OpenALSoundRenderer();

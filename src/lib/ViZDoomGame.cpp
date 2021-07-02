@@ -641,6 +641,15 @@ namespace vizdoom {
 
     void DoomGame::setSoundEnabled(bool sound) { this->doomController->setNoSound(!sound); }
 
+    void DoomGame::setSoftSoundEnabled(bool sound) {
+        this->doomController->setNoSoftSound(!sound);
+        if (sound){
+            this->doomController->addCustomArg("+soft_sound 1");
+        } else {
+            this->doomController->addCustomArg("+soft_sound 0");
+        }
+    }
+
     void DoomGame::setSoundSamplingFreq(SamplingRate samplingRate) {
         int samp_freq = 0;
 #define CASE_SF(w) case SR_##w : samp_freq = w; break;

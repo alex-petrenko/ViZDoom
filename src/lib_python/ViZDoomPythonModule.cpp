@@ -545,6 +545,8 @@ PYBIND11_MODULE(vizdoom, vz){
 
         .def("set_console_enabled",&DoomGamePython::setConsoleEnabled)
         .def("set_sound_enabled",&DoomGamePython::setSoundEnabled)
+        .def("set_soft_sound_enabled",&DoomGamePython::setSoftSoundEnabled)
+
         .def("set_sound_sampling_freq",&DoomGamePython::setSoundSamplingFreq)
         .def("get_sound_sampling_freq",&DoomGamePython::getSoundSamplingFreq)
         .def("set_sound_observation_num_frames",&DoomGamePython::setSoundObservationNumFrames)

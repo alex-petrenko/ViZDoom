@@ -80,6 +80,7 @@ extern HINSTANCE g_hInst;
 
 EXTERN_CVAR (Float, snd_sfxvolume)
 EXTERN_CVAR (Int, samp_fre)
+EXTERN_CVAR (Bool, soft_sound)
 
 CVAR (Int, snd_samplerate, 0, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
 CVAR (Int, snd_buffersize, 0, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
@@ -289,7 +290,7 @@ void I_InitSound ()
 			{
 				Printf (TEXTCOLOR_RED"FMod Ex Sound init failed. Trying OpenAL.\n");
 				I_CloseSound();
-				GSnd = new OpenALSoundRenderer;
+				GSnd = new OpenALSoundRenderer (0);
 				snd_backend = "openal";
 			}
 		#endif
@@ -299,7 +300,11 @@ void I_InitSound ()
 		#ifndef NO_OPENAL
 			if (IsOpenALPresent())
 			{
-				GSnd = new OpenALSoundRenderer( samp_fre);
+			    if (soft_sound){
+                    GSnd = new OpenALSoundRenderer( samp_fre);
+			    } else {
+                    GSnd = new OpenALSoundRenderer (0);
+			    }
 			}
 		#endif
 		#ifndef NO_FMOD

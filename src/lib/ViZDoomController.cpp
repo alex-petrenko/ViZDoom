@@ -597,6 +597,10 @@ namespace vizdoom {
         if (!this->doomRunning) this->noSound = sound;
     }
 
+    void DoomController::setNoSoftSound(bool sound) {
+        if (!this->doomRunning) this->noSoftSound = sound;
+    }
+
     bool DoomController::getNoSound() const {
         return this->noSound;
     }

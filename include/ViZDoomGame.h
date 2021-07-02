@@ -188,6 +188,7 @@ namespace vizdoom {
         void setWindowVisible(bool visibility);
         void setConsoleEnabled(bool console);
         void setSoundEnabled(bool sound);
+        void setSoftSoundEnabled(bool sound);
 
         int getScreenWidth();
         int getScreenHeight();

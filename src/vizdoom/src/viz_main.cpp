@@ -111,6 +111,7 @@ CVAR (Int, viz_connect_timeout, 60, CVAR_NOSET) // In seconds
 
 // sound related
 CVAR (Int, samp_fre, 0, 0)
+CVAR (Bool, soft_sound, 0, 0)
 
 CCMD(viz_set_seed){
     viz_seed.CmdSet(argv[1]);
@@ -235,7 +236,7 @@ void VIZ_Tic(){
             }
 
             // Sound buffer will always be updated irrespective of update signal
-            if (!*viz_nosound)
+            if (*soft_sound)
                 VIZ_CopySoundBuffer();
 
             VIZ_MQSend(VIZ_MSG_CODE_DOOM_DONE);

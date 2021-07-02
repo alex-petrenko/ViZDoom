@@ -155,6 +155,7 @@ namespace vizdoom {
 
         void setNoConsole(bool console);
         void setNoSound(bool noSound);
+        void setNoSoftSound(bool noSound);
         bool getNoSound() const;
 
         void addCustomArg(std::string arg);
@@ -377,6 +378,7 @@ namespace vizdoom {
 
         bool noConsole;
         bool noSound;
+        bool noSoftSound;
 
         std::string exePath;
         std::string iwadPath;
