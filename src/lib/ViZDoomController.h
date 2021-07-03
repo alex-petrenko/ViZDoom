@@ -155,6 +155,8 @@ namespace vizdoom {
 
         void setNoConsole(bool console);
         void setNoSound(bool noSound);
+        void setNoSoftSound(bool noSound);
+        bool getNoSound() const;
 
         void addCustomArg(std::string arg);
         void clearCustomArgs();
@@ -183,6 +185,7 @@ namespace vizdoom {
         unsigned int getScreenHeight();
         void setScreenHeight(unsigned int height);
         ScreenFormat getScreenFormat();
+        int getAudioSamplesPerTic();
 
         void setScreenFormat(ScreenFormat format);
         unsigned int getScreenChannels();
@@ -216,6 +219,7 @@ namespace vizdoom {
         uint8_t *const getDepthBuffer();
         uint8_t *const getLabelsBuffer();
         uint8_t *const getAutomapBuffer();
+        uint16_t *const getAudioBuffer();
 
         /* Buttons getters and setters */
         /*------------------------------------------------------------------------------------------------------------*/
@@ -265,6 +269,13 @@ namespace vizdoom {
         unsigned int getPlayerLastActionTic(unsigned int playerNumber);
         unsigned int getPlayerLastKillTic(unsigned int playerNumber);
 
+        void setSoundSamplingFreq(int freq);
+        int getSoundSamplingFreq() const;
+
+        void setSoundObservationNumFrames(int numFrames);
+        int getSoundObservationNumFrames() const;
+
+        int soundObservationNumFrames;
     private:
 
         /* Flow */
@@ -337,12 +348,14 @@ namespace vizdoom {
         uint8_t *depthBuffer;
         uint8_t *automapBuffer;
         uint8_t *labelsBuffer;
+        uint16_t *audioBuffer;
 
 
         /* Settings */
         /*------------------------------------------------------------------------------------------------------------*/
 
         unsigned int screenWidth, screenHeight, screenChannels, screenDepth;
+        int audioSamplesPerTic;
         size_t screenPitch, screenSize;
         ScreenFormat screenFormat;
         bool depth;
@@ -365,6 +378,7 @@ namespace vizdoom {
 
         bool noConsole;
         bool noSound;
+        bool noSoftSound;
 
         std::string exePath;
         std::string iwadPath;
@@ -387,6 +401,7 @@ namespace vizdoom {
         std::vector<std::string> customArgs;
         std::vector<std::string> doomArgs;
 
+        int sampling_fre;
     };
 
 }

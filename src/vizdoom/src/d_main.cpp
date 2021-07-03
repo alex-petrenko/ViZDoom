@@ -1277,7 +1277,6 @@ void D_DoomLoop ()
 			I_StartTic ();
 			if(!*viz_controlled || *viz_render_all) D_Display();
 			if(!*viz_controlled || !*viz_nosound) S_UpdateMusic(); // OpenAL needs this to keep the music running, thanks to a complete lack of a sane streaming implementation using callbacks. :(
-
             VIZ_Tic();
 		}
 		catch (CRecoverableError &error)

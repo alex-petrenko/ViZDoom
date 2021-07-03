@@ -69,11 +69,15 @@ namespace vizdoom {
         /* Update buffers */
         this->updateBuffersShapes();
         int colorDims = 3;
-        if (this->getScreenChannels() == 1) colorDims = 2;
+        if (this->getScreenChannels() == 1 ) colorDims = 2;
 
         if (this->state->screenBuffer != nullptr)
             this->pyState->screenBuffer = this->dataToNumpyArray(colorDims, this->colorShape, NPY_UBYTE, this->state->screenBuffer->data());
         else this->pyState->screenBuffer = pyb::none();
+
+        if (this->state->audioBuffer != nullptr)
+            this->pyState->audioBuffer = this->dataToNumpyArray(2, this->audioShape, NPY_SHORT, this->state->audioBuffer->data());
+        else this->pyState->audioBuffer = pyb::none();
 
         if (this->state->depthBuffer != nullptr)
             this->pyState->depthBuffer = this->dataToNumpyArray(2, this->grayShape, NPY_UBYTE, this->state->depthBuffer->data());
@@ -200,6 +204,7 @@ namespace vizdoom {
         int channels = this->getScreenChannels();
         int width = this->getScreenWidth();
         int height = this->getScreenHeight();
+        int audioSamplesPerTic = this->getAudioSamplesPerTic();
 
         switch(this->getScreenFormat()){
             case CRCGCB:
@@ -217,6 +222,9 @@ namespace vizdoom {
 
         this->grayShape[0] = height;
         this->grayShape[1] = width;
+
+        this->audioShape[0] = audioSamplesPerTic * this->doomController->soundObservationNumFrames;
+        this->audioShape[1] = 2;
     }
 
 

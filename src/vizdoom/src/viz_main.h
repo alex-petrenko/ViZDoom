@@ -31,6 +31,7 @@ extern bool vizUpdate;
 extern unsigned int vizLastUpdate;
 extern int vizNodesRecv[VIZ_MAX_PLAYERS];
 
+
 void VIZ_Init();
 
 void VIZ_AsyncStartTic();
